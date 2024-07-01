@@ -1,6 +1,6 @@
 <script setup lang="ts">
-//@ts-ignore
 import L from 'leaflet';
+import { toast } from "vue3-toastify";
 import {computed, onMounted, ref, watch, watchEffect} from "vue";
 import {useRoute} from "vue-router";
 import 'vue-select/dist/vue-select.css';
@@ -143,9 +143,18 @@ const getCoordinates = (layer: any) => {
 
 
 const onSuccessSave = async () => {
+  drawnItems.clearLayers();
+  Object.keys(formForCreate).forEach(item=>{
+    formForCreate[item] = '';
+  });
   await loadGeometries(geographic_region?.value?.id);
   updateGeoJson(layer);
   createModal.value = false;
+  toast("Успешно добавлено!", {
+    "theme": "auto",
+    "type": "success",
+    "dangerouslyHTMLString": true
+  })
 }
 
 const onSaveGeometryObject = () => {
@@ -161,7 +170,14 @@ const onSaveGeometryObject = () => {
     geometry: getGeometryCollection(layers)
   }).then(_=>{
     onSuccessSave();
-  }).catch(e=>console.log(e))
+  }).catch(e=>{
+    console.log(e);
+    toast("Ошибка при сохранений! "+e.toString(), {
+      "theme": "auto",
+      "type": "warning",
+      "dangerouslyHTMLString": true
+    })
+  })
       .finally(()=>isLoading.value=false);
 }
 onMounted(()=>{
@@ -182,7 +198,7 @@ onMounted(()=>{
         <VueSelect class="mt-4" v-model="selectedCity" title="Выбрать город" :options="options"></VueSelect>
         <div v-if="category" class="mt-4">
           <div class="flex flex-shrink-0  p-1 cursor-pointer justify-center flex-col">
-            <div class="border p-3 flex gap-2 items-center flex-shrink-0 rounded-full">
+            <div @click="showCategory = true" class="border p-3 flex gap-2 items-center flex-shrink-0 rounded-full">
               <ImageComponent class="h-[36px] w-[36px] flex-shrink-0" :url="category.icon" :alt="category.name"></ImageComponent>
               <span class="text-center">{{category.name}}</span>
             </div>
