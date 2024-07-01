@@ -5,7 +5,7 @@ const model = defineModel<boolean>();
 
 </script>
 <template>
-  <aside class="relative transition-transform shadow bg-white min-h-screen" :class="{
+  <aside class="w-[350px] fixed z-[99999] transition-transform shadow bg-white min-h-screen" :class="{
     '-translate-x-[350px] !absolute z-[99998]': !model
   }">
     <div>

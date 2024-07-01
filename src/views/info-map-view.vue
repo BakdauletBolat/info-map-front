@@ -41,7 +41,7 @@ onMounted(()=>{
   <main
       class="flex w-full min-h-screen">
     <SidebarComponent v-model="showModal"
-                      class="w-[350px]  flex-shrink-0">
+                      class="flex-shrink-0">
         <InfoMapSidebar></InfoMapSidebar>
     </SidebarComponent>
     <section class="w-full">

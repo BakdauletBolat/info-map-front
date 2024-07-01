@@ -191,7 +191,7 @@ onMounted(()=>{
 
 <template>
   <main class="flex w-full min-h-screen">
-    <SidebarComponent class="w-[350px] flex-shrink-0" v-model="modal">
+    <SidebarComponent class="flex-shrink-0" v-model="modal">
       <div class="p-4">
         <h2>Выбрать город</h2>
         <VueSelect class="mt-4" v-model="selectedCity" title="Выбрать город" :options="options"></VueSelect>
