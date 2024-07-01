@@ -20,6 +20,9 @@ const showModal = ref<boolean>(true);
 
 onMounted(()=>{
   loadCategories();
+  if (document.body.offsetWidth <= 400) {
+    showModal.value = false;
+  }
   initData(route.params.slug.toString());
 });
 
@@ -38,7 +41,7 @@ onMounted(()=>{
   <main
       class="flex w-full min-h-screen">
     <SidebarComponent v-model="showModal"
-                      class="w-[350px] flex-shrink-0">
+                      class="w-[350px]  flex-shrink-0">
         <InfoMapSidebar></InfoMapSidebar>
     </SidebarComponent>
     <section class="w-full">

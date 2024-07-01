@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@heroicons/vue": "^2.1.4",
+    "@maptiler/leaflet-maptilersdk": "^2.0.0",
     "autoprefixer": "^10.4.19",
     "axios": "^1.7.2",
     "leaflet": "^1.9.4",

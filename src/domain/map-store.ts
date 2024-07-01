@@ -9,6 +9,7 @@ import {
 import L, {Layer, Map} from "leaflet";
 import {GeoJSON} from "@/domain/models.ts";
 import {ref, watch} from "vue";
+import "@maptiler/leaflet-maptilersdk";
 
 export let map: Map | null = null;
 export let layer: Layer | null = null;
@@ -27,8 +28,10 @@ export const updateGeoJson = (layer: any) => {
 export const initMap = () => {
     if (map == null) {
         map = L.map('map').setView([geographic_region.value!.latitude, geographic_region.value!.longitude], geographic_region.value!.zoom);
-        L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; Bakdaulet'
+        //@ts-ignore
+        const mtLayer = L.maptilerLayer({
+            apiKey: "irPaySjrW6090FVqmYLu",
+            style: L.MaptilerStyle.STREETS, //optional
         }).addTo(map);
     }
 }
