@@ -31,6 +31,7 @@ export const initMap = () => {
         //@ts-ignore
         const mtLayer = L.maptilerLayer({
             apiKey: "irPaySjrW6090FVqmYLu",
+            //@ts-ignore
             style: L.MaptilerStyle.STREETS, //optional
         }).addTo(map);
     }

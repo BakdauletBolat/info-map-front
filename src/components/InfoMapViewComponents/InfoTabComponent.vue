@@ -17,7 +17,6 @@ const activeTab = ref<number>(0);
           '!border-slate-400 rounded': activeTab == 1
         }">Информация о место</div>
     </div>
-    // @ts-ignore
     <GeographicInfoComponent v-if="activeTab==0" :region="geographic_region!"></GeographicInfoComponent>
     <div v-if="activeTab==1">
       <h2 class="font-bold">Название</h2>
