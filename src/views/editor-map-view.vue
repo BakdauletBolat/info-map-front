@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import L from 'leaflet';
 import { toast } from "vue3-toastify";
 import {computed, onMounted, ref, watch, watchEffect} from "vue";
 import {useRoute} from "vue-router";
