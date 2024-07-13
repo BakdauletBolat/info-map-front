@@ -46,7 +46,8 @@ export const mapSetView = (map: Map,x: number,y: number,z: number) => {
 
 
 const transcryptor = {
-    title: 'Загаловок',
+    title: 'Тақырып',
+    description: 'Сипаттама'
 }
 
 const renderPopup = (feature: any) => {
@@ -84,6 +85,13 @@ const initGeometryObjectsLayer = () => {
                 show_on_map: true
             }
         },{
+            style() {
+                return {
+                    weight: 2,
+                    gradient: true,
+                    color: 'black'
+                }
+            },
             onEachFeature(feature, layer) {
                 const zooMarkerPopup = L.popup().setContent(renderPopup(feature));
                 layer.bindPopup(zooMarkerPopup);

@@ -25,21 +25,21 @@ const onChange = () => {
 
 
 <template>
-  <div class="h-full relative" :style="{
+  <div class="h-[200px] relative" :style="{
     // @ts-ignore
         background: `url(${geographic_region?.photo ? geographic_region?.photo : 'https://d-assets.2gis.ru/headerPhotos/almaty.jpg'}) no-repeat center center / cover`
       }">
-    <div class=" h-full inset-0 bg-gradient-to-t from-black to-transparent">
+    <div class="h-full inset-0 bg-gradient-to-t from-black to-transparent">
       <div class="p-4">
         <button v-if="geographic_region?.children && geographic_region?.children?.length > 0 && geographic_region.parent_slug == null" @click="showCity = !showCity" class="bg-[#003366] w-full px-4 py-2 rounded text-white cursor-pointer">
-          Посмотреть города
+          Қалаларды көру
         </button>
         <div class="flex gap-2" v-else-if="geographic_region?.children && geographic_region?.children?.length > 0" >
           <button @click="onChange" class="bg-[#003366] rounded text-white px-2">
             <ChevronLeftIcon class="w-5 h-5"></ChevronLeftIcon>
           </button>
           <button @click="showCity = !showCity" class="bg-[#003366] w-full px-4 py-2 rounded text-white cursor-pointer">
-            Посмотреть города
+            Қалаларды көру
           </button>
         </div>
         <div v-else>
@@ -55,7 +55,7 @@ const onChange = () => {
           <div class="flex flex-col">
             <UserGroupIcon class="w-6 h-6"></UserGroupIcon>
             <div>
-              <div>Количество населения</div>
+              <div>Халық саны</div>
               <span>{{geographic_region?.population_count}}</span>
             </div>
           </div>
@@ -64,7 +64,7 @@ const onChange = () => {
               <HomeModernIcon class="w-6 h-6"></HomeModernIcon>
             </div>
             <div>
-              <div>Количество жилья</div>
+              <div>Тұрғын үйлер саны</div>
               <span>{{geographic_region?.dwelling_count}}</span>
             </div>
           </div>

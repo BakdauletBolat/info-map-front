@@ -74,7 +74,7 @@ const getStyleContainer = (level: number) => {
         <div class="flex flex-col">
           <UserGroupIcon class="w-6 h-6"></UserGroupIcon>
           <div>
-            <div>Количество населения</div>
+            <div>Халық саны</div>
             <span>{{geographic_region?.population_count}}</span>
           </div>
         </div>
@@ -83,7 +83,7 @@ const getStyleContainer = (level: number) => {
             <HomeModernIcon class="w-6 h-6"></HomeModernIcon>
           </div>
           <div>
-            <div>Количество жилья</div>
+            <div>Тұрғын үйлер саны</div>
             <span>{{geographic_region?.dwelling_count}}</span>
           </div>
         </div>
