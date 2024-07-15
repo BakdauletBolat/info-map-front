@@ -27,13 +27,26 @@ export const updateGeoJson = (layer: any) => {
 
 export const initMap = () => {
     if (map == null) {
-        map = L.map('map').setView([geographic_region.value!.latitude, geographic_region.value!.longitude], geographic_region.value!.zoom);
-        //@ts-ignore
         const mtLayer = L.maptilerLayer({
             apiKey: "irPaySjrW6090FVqmYLu",
             //@ts-ignore
             style: L.MaptilerStyle.STREETS, //optional
-        }).addTo(map);
+        });
+        const osmHOT = L.tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            attribution: 'Tiles © Esri — Source: Esri, DeLorme, NAVTEQ',
+            maxZoom: 18
+        })
+
+        var baseMaps = {
+            "Спутник": osmHOT,
+            "Негізгі": mtLayer
+        };
+
+        map = L.map('map',{
+            layers: [mtLayer]
+        }).setView([geographic_region.value!.latitude, geographic_region.value!.longitude], geographic_region.value!.zoom);
+        //@ts-ignore
+        const layerControl = L.control.layers(baseMaps).addTo(map);
     }
 }
 

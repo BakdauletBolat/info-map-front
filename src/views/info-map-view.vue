@@ -44,6 +44,9 @@ onMounted(()=>{
                       class="flex-shrink-0">
         <InfoMapSidebar></InfoMapSidebar>
     </SidebarComponent>
+    <div class="absolute top-2">
+
+    </div>
     <section class="w-full">
       <div :style="{width:'100%',height: '100%'}" id="map"></div>
     </section>
