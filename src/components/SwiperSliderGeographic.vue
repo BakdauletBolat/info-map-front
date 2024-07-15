@@ -3,6 +3,7 @@ import {register} from 'swiper/element/bundle';
 import {IGeographicRegion} from "@/domain/models.ts";
 import ImageComponent from "@/components/ImageComponent.vue";
 import {onMounted} from "vue";
+import ExampleImage from '@/assets/example.jpeg';
 register();
 
 defineProps<{
@@ -50,6 +51,7 @@ const onClickSlide = (region: IGeographicRegion) => {
         rotate: 20,
         slideShadows: false,
         }"
+
         :slideActiveClass="'custom-active'"
     >
       <swiper-slide
@@ -57,8 +59,8 @@ const onClickSlide = (region: IGeographicRegion) => {
           :data-latitude="child.latitude"
           :data-longitude="child.longitude"
           v-for="child in region.children">
-        <div  @click="onClickSlide(child)" class="min-w-[350px] cursor-pointer relative bg-white rounded-2xl overflow-hidden">
-          <ImageComponent class="w-full  h-[350px]" :alt="child.name" :url="child.photo"></ImageComponent>
+        <div  @click="onClickSlide(child)" class="min-w-[350px] cursor-pointer relative bg-white rounded overflow-hidden">
+          <ImageComponent class="w-full  h-[350px]" :alt="child.name" :url="child.photo ? child.photo : ExampleImage"></ImageComponent>
           <div class="absolute top-0 bg-gradient-to-t from-black to-transparent w-full  h-full"></div>
           <div class="absolute top-0 text-white text-2xl w-full flex justify-center items-center h-full z-[1]">{{child.name}}</div>
         </div>

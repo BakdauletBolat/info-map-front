@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {activeCategoryId, categories, geographic_region, showCity, showInfo} from "@/domain/stores.ts";
-import {ChevronLeftIcon, InformationCircleIcon, HomeModernIcon, UserGroupIcon} from "@heroicons/vue/24/outline";
+import {ChevronLeftIcon, InformationCircleIcon, HomeModernIcon, UserGroupIcon, EyeIcon} from "@heroicons/vue/24/outline";
 import ImageComponent from "@/components/ImageComponent.vue";
 import {onChangeCity} from "@/domain/map-store.ts";
 import {useRouter} from "vue-router";
@@ -25,25 +25,26 @@ const onChange = () => {
 
 
 <template>
-  <div class="h-[200px] relative" :style="{
+  <div class="h-[180px] relative" :style="{
     // @ts-ignore
         background: `url(${geographic_region?.photo ? geographic_region?.photo : 'https://d-assets.2gis.ru/headerPhotos/almaty.jpg'}) no-repeat center center / cover`
       }">
     <div class="h-full inset-0 bg-gradient-to-t from-black to-transparent">
       <div class="p-4">
-        <button v-if="geographic_region?.children && geographic_region?.children?.length > 0 && geographic_region.parent_slug == null" @click="showCity = !showCity" class="bg-[#003366] w-full px-4 py-2 rounded text-white cursor-pointer">
-          Қалаларды көру
+        <button v-if="geographic_region?.children && geographic_region?.children?.length > 0 && geographic_region.parent_slug == null" @click="showCity = !showCity" class="bg-[#003366] text-white flex items-center justify-center gap-2 w-full px-4 py-2 rounded-sm cursor-pointer">
+          <EyeIcon class="w-6 h-6"></EyeIcon>
+          <span>Қалаларды көру</span>
         </button>
         <div class="flex gap-2" v-else-if="geographic_region?.children && geographic_region?.children?.length > 0" >
-          <button @click="onChange" class="bg-[#003366] rounded text-white px-2">
+          <button @click="onChange" class="bg-[#003366] rounded-sm text-white px-2">
             <ChevronLeftIcon class="w-5 h-5"></ChevronLeftIcon>
           </button>
-          <button @click="showCity = !showCity" class="bg-[#003366] w-full px-4 py-2 rounded text-white cursor-pointer">
+          <button @click="showCity = !showCity" class="bg-[#003366] w-full px-4 py-2 rounded-sm text-white cursor-pointer">
             Қалаларды көру
           </button>
         </div>
         <div v-else>
-          <button @click="onChange" class="bg-[#003366] rounded text-white py-2 px-4">
+          <button @click="onChange" class="bg-[#003366] rounded-sm text-white py-2 px-4">
             <ChevronLeftIcon class="w-5 h-5"></ChevronLeftIcon>
           </button>
         </div>

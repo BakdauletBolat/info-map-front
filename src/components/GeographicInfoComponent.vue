@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {IGeographicRegion} from "@/domain/models.ts";
 import {geographic_region, showInfo} from "@/domain/stores.ts";
-import {HomeModernIcon, UserGroupIcon, ArrowUpOnSquareStackIcon} from "@heroicons/vue/24/outline";
+import {HomeModernIcon, UserGroupIcon, ArrowUpOnSquareStackIcon, ExclamationCircleIcon} from "@heroicons/vue/24/outline";
 import {onChangeCity} from "@/domain/map-store.ts";
 import {useRouter} from "vue-router";
 
@@ -67,7 +67,7 @@ const getStyleContainer = (level: number) => {
       showInfo = false;
     }" class="flex gap-2 cursor-pointer items-center">
       <h2 :style="getStyle(region.level)" class="font-bold">{{region?.name}}</h2>
-      <ArrowUpOnSquareStackIcon class="w-6 h-6"></ArrowUpOnSquareStackIcon>
+      <ExclamationCircleIcon class="w-6 h-6"></ExclamationCircleIcon>
     </div>
     <div>
       <div class="flex gap-2 mt-3 text-xs">
