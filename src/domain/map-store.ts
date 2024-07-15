@@ -27,6 +27,7 @@ export const updateGeoJson = (layer: any) => {
 
 export const initMap = () => {
     if (map == null) {
+        //@ts-ignore
         const mtLayer = L.maptilerLayer({
             apiKey: "irPaySjrW6090FVqmYLu",
             //@ts-ignore
