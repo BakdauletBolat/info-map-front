@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {IGeographicRegion} from "@/domain/models.ts";
 import {geographic_region, showInfo} from "@/domain/stores.ts";
-import {HomeModernIcon, UserGroupIcon, ArrowUpOnSquareStackIcon, ExclamationCircleIcon} from "@heroicons/vue/24/outline";
+import {HomeModernIcon, UserGroupIcon, ExclamationCircleIcon} from "@heroicons/vue/24/outline";
 import {onChangeCity} from "@/domain/map-store.ts";
 import {useRouter} from "vue-router";
 
