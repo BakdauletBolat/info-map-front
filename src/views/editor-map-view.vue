@@ -125,6 +125,8 @@ const getPolylineType = (type: string) => {
       return 'Point';
     case 'polyline':
       return 'LineString';
+    case 'polygon':
+      return 'Polygon'
   }
   return ''
 }
@@ -133,9 +135,18 @@ const getCoordinates = (layer: any) => {
   if (layer.layerType == 'marker') {
     return [layer._latlng.lng, layer._latlng.lat]
   }
-  const coors: any[] = []
+  if (layer.layerType == 'polygon') {
+    const coors: any[] = [];
+    layer._latlngs.forEach((layers: any)=>{
+      layers.forEach((layer: any)=>{
+        coors.push([layer.lng,layer.lat]);
+      })
+    })
+    return [coors];
+  }
+  const coors: any[] = [];
   layer._latlngs.forEach((layer: any)=>{
-    coors.push([layer.lng,layer.lat])
+    coors.push([layer.lng,layer.lat]);
   })
   return coors
 }

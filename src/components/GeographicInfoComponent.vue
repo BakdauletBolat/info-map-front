@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {IGeographicRegion} from "@/domain/models.ts";
-import {geographic_region, showInfo} from "@/domain/stores.ts";
+import {showInfo} from "@/domain/stores.ts";
 import {HomeModernIcon, UserGroupIcon, ExclamationCircleIcon} from "@heroicons/vue/24/outline";
 import {onChangeCity} from "@/domain/map-store.ts";
 import {useRouter} from "vue-router";
@@ -75,7 +75,7 @@ const getStyleContainer = (level: number) => {
           <UserGroupIcon class="w-6 h-6"></UserGroupIcon>
           <div>
             <div>Халық саны</div>
-            <span>{{geographic_region?.population_count}}</span>
+            <span>{{region?.population_count}}</span>
           </div>
         </div>
         <div class="flex flex-col">
@@ -84,7 +84,7 @@ const getStyleContainer = (level: number) => {
           </div>
           <div>
             <div>Тұрғын үйлер саны</div>
-            <span>{{geographic_region?.dwelling_count}}</span>
+            <span>{{region?.dwelling_count}}</span>
           </div>
         </div>
       </div>

@@ -99,11 +99,16 @@ const initGeometryObjectsLayer = () => {
                 show_on_map: true
             }
         },{
-            style() {
+            style(layer: any) {
+                if (layer.geometry.type == 'LineString'){
+                    return {
+                        weight: 2,
+                        color: 'black'
+                    }
+                }
                 return {
-                    weight: 2,
-                    gradient: true,
-                    color: 'black'
+                    weight: 1,
+                    color: '#B2ABF2'
                 }
             },
             onEachFeature(feature, layer) {
@@ -111,7 +116,6 @@ const initGeometryObjectsLayer = () => {
                 layer.bindPopup(zooMarkerPopup);
             },
             filter: function(feature: GeoJSON, _: any) {
-                console.log(feature)
                 return feature.properties.show_on_map
             },
             pointToLayer(feature: any, lat_lng:any) {

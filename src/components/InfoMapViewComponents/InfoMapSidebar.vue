@@ -4,7 +4,7 @@ import {ChevronLeftIcon, InformationCircleIcon, HomeModernIcon, UserGroupIcon, E
 import ImageComponent from "@/components/ImageComponent.vue";
 import {onChangeCity} from "@/domain/map-store.ts";
 import {useRouter} from "vue-router";
-
+import TestImage from '@/assets/test.png';
 
 const router = useRouter();
 
@@ -21,6 +21,16 @@ const onChange = () => {
   onChangeCity(router, geographic_region.value.parent_slug);
 }
 
+function getCityText() {
+  if (geographic_region.value?.level == 0) {
+    return 'Ауылдық округтарды көру'
+  }
+  else if (geographic_region.value?.level == 1) {
+    return 'Ауылдарды көру'
+  }
+  return 'Қалаларды көру'
+}
+
 </script>
 
 
@@ -33,14 +43,14 @@ const onChange = () => {
       <div class="p-4">
         <button v-if="geographic_region?.children && geographic_region?.children?.length > 0 && geographic_region.parent_slug == null" @click="showCity = !showCity" class="bg-[#003366] text-white flex items-center justify-center gap-2 w-full px-4 py-2 rounded-sm cursor-pointer">
           <EyeIcon class="w-6 h-6"></EyeIcon>
-          <span>Қалаларды көру</span>
+          <span>{{getCityText()}}</span>
         </button>
         <div class="flex gap-2" v-else-if="geographic_region?.children && geographic_region?.children?.length > 0" >
           <button @click="onChange" class="bg-[#003366] rounded-sm text-white px-2">
             <ChevronLeftIcon class="w-5 h-5"></ChevronLeftIcon>
           </button>
           <button @click="showCity = !showCity" class="bg-[#003366] w-full px-4 py-2 rounded-sm text-white cursor-pointer">
-            Қалаларды көру
+            {{ getCityText() }}
           </button>
         </div>
         <div v-else>
@@ -49,9 +59,12 @@ const onChange = () => {
           </button>
         </div>
         <h2 @click="showInfo = !showInfo" class="cursor-pointer mt-4 text-lg text-white flex gap-2 items-center">
-          <span>{{geographic_region?.name}}</span> <span>
+          <ImageComponent class="w-[30px] h-[30px]" :alt="geographic_region?.slug" :url="TestImage" />
+          <span>{{geographic_region?.name}}</span>
+          <span>
               <InformationCircleIcon class="w-6 h-6"></InformationCircleIcon>
-            </span></h2>
+            </span>
+        </h2>
         <div class="flex gap-2 mt-3 text-white text-xs">
           <div class="flex flex-col">
             <UserGroupIcon class="w-6 h-6"></UserGroupIcon>
