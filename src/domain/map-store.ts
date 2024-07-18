@@ -29,13 +29,15 @@ export const initMap = () => {
     if (map == null) {
         //@ts-ignore
         const mtLayer = L.maptilerLayer({
+            attribution: '',
             apiKey: "irPaySjrW6090FVqmYLu",
             //@ts-ignore
             style: L.MaptilerStyle.STREETS, //optional
         });
-        const osmHOT = L.tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-            attribution: 'Tiles © Esri — Source: Esri, DeLorme, NAVTEQ',
-            maxZoom: 18
+        const osmHOT = L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+            attribution: '',
+            maxZoom: 20,
+            subdomains:['mt0','mt1','mt2','mt3']
         })
 
 
@@ -48,7 +50,11 @@ export const initMap = () => {
             layers: [mtLayer]
         }).setView([geographic_region.value!.latitude, geographic_region.value!.longitude], geographic_region.value!.zoom);
         //@ts-ignore
-        const layerControl = L.control.layers(baseMaps).addTo(map);
+        map?.attributionControl.remove();
+        L.control.layers(baseMaps).addTo(map);
+        L.control.attribution({
+            prefix: false // Remove default "Leaflet" attribution
+        }).addAttribution('Бәйдібек ауданы <a href="https://widget.bolatb.kz/info/baidybek_d" target="_blank">B-Maps</a>').addTo(map);
     }
 }
 
