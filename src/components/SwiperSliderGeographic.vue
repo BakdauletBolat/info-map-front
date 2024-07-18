@@ -45,6 +45,7 @@ const onClickSlide = (region: IGeographicRegion) => {
   <div v-if="region?.children" class="min-h-screen flex justify-center items-center">
     <swiper-container
         class="w-full"
+        :mousewheel="true"
         :slides-per-view="1"
         :space-between="100"
         :centeredSlides="true"

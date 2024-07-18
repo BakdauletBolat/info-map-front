@@ -38,6 +38,7 @@ export const initMap = () => {
             maxZoom: 18
         })
 
+
         var baseMaps = {
             "Спутник": osmHOT,
             "Негізгі": mtLayer

@@ -1,9 +1,13 @@
 <script setup lang="ts">
 import {IGeographicRegion} from "@/domain/models.ts";
 import {showInfo} from "@/domain/stores.ts";
-import {HomeModernIcon, UserGroupIcon, ExclamationCircleIcon} from "@heroicons/vue/24/outline";
+import {ExclamationCircleIcon} from "@heroicons/vue/24/outline";
 import {onChangeCity} from "@/domain/map-store.ts";
 import {useRouter} from "vue-router";
+import ImageComponent from "@/components/ImageComponent.vue";
+import HouseSVG from '@/assets/house-svgrepo-com.svg';
+import PeopleSVG from '@/assets/people-29-svgrepo-com.svg';
+
 
 defineProps<{
   region: IGeographicRegion
@@ -66,13 +70,13 @@ const getStyleContainer = (level: number) => {
       onChangeCity(router, region.slug);
       showInfo = false;
     }" class="flex gap-2 cursor-pointer items-center">
-      <h2 :style="getStyle(region.level)" class="font-bold">{{region?.name}}</h2>
-      <ExclamationCircleIcon class="w-6 h-6"></ExclamationCircleIcon>
+      <h2 :style="getStyle(region.level)" class="font-bold !text-blue-900">{{region?.name}}</h2>
+      <ExclamationCircleIcon class="w-6 h-6 !text-blue-900  "></ExclamationCircleIcon>
     </div>
     <div>
       <div class="flex gap-2 mt-3 text-xs">
         <div class="flex flex-col">
-          <UserGroupIcon class="w-6 h-6"></UserGroupIcon>
+          <ImageComponent :url="PeopleSVG" class="w-6 h-6"></ImageComponent>
           <div>
             <div>Халық саны</div>
             <span>{{region?.population_count}}</span>
@@ -80,7 +84,7 @@ const getStyleContainer = (level: number) => {
         </div>
         <div class="flex flex-col">
           <div>
-            <HomeModernIcon class="w-6 h-6"></HomeModernIcon>
+            <ImageComponent :url="HouseSVG" class="w-6 h-6"></ImageComponent>
           </div>
           <div>
             <div>Тұрғын үйлер саны</div>

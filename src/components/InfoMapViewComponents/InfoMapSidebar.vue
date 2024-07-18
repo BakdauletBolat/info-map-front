@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import {activeCategoryId, categories, geographic_region, showCity, showInfo} from "@/domain/stores.ts";
-import {ChevronLeftIcon, InformationCircleIcon, HomeModernIcon, UserGroupIcon, EyeIcon} from "@heroicons/vue/24/outline";
+import {ChevronLeftIcon, InformationCircleIcon, EyeIcon} from "@heroicons/vue/24/outline";
 import ImageComponent from "@/components/ImageComponent.vue";
 import {onChangeCity} from "@/domain/map-store.ts";
 import {useRouter} from "vue-router";
 import TestImage from '@/assets/test.png';
+import HouseSVG from '@/assets/house-svgrepo-com.svg';
+import PeopleSVG from '@/assets/people-29-svgrepo-com.svg';
 
 const router = useRouter();
 
@@ -67,7 +69,7 @@ function getCityText() {
         </h2>
         <div class="flex gap-2 mt-3 text-white text-xs">
           <div class="flex flex-col">
-            <UserGroupIcon class="w-6 h-6"></UserGroupIcon>
+            <ImageComponent :url="PeopleSVG" class="w-6 h-6"></ImageComponent>
             <div>
               <div>Халық саны</div>
               <span>{{geographic_region?.population_count}}</span>
@@ -75,7 +77,7 @@ function getCityText() {
           </div>
           <div class="flex flex-col">
             <div>
-              <HomeModernIcon class="w-6 h-6"></HomeModernIcon>
+              <ImageComponent :url="HouseSVG" class="w-6 h-6"></ImageComponent>
             </div>
             <div>
               <div>Тұрғын үйлер саны</div>

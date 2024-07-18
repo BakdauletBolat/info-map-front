@@ -15,7 +15,7 @@ defineProps<{
     <div class="w-full" v-if="blured">
       <slot></slot>
       <div class="cursor-pointer bg-slate-900 rounded
-   z-[9999] absolute top-6 right-6">
+   z-[9999] absolute top-16 left-6">
         <XMarkIcon @click="model = false" class="w-9 text-white h-9"></XMarkIcon>
       </div>
     </div>

@@ -11,11 +11,11 @@ const activeTab = ref<number>(0);
 <template>
   <div class="p-4">
     <div class="flex gap-2">
-      <div @click="activeTab=0" class="p-2 border cursor-pointer border-transparent " :class="{
-          '!border-slate-400 rounded ': activeTab == 0
+      <div @click="activeTab=0" class="p-2 border-b-2 cursor-pointer border-transparent " :class="{
+          '!border-blue-900 ': activeTab == 0
         }">Общая информация</div>
-      <div @click="activeTab=1" class="p-2 border cursor-pointer border-transparent " :class="{
-          '!border-slate-400 rounded': activeTab == 1
+      <div @click="activeTab=1" class="p-2 border-b-2 cursor-pointer border-transparent " :class="{
+          '!border-blue-900': activeTab == 1
         }">Информация о место</div>
     </div>
     <GeographicInfoComponent v-if="activeTab==0" :region="geographic_region!"></GeographicInfoComponent>
