@@ -4,6 +4,8 @@ import {IGeographicRegion} from "@/domain/models.ts";
 import ImageComponent from "@/components/ImageComponent.vue";
 import {onMounted} from "vue";
 import ExampleImage from '@/assets/example.jpeg';
+import {ArrowLongLeftIcon, ArrowLongRightIcon} from "@heroicons/vue/24/outline";
+
 register();
 
 defineProps<{
@@ -20,6 +22,18 @@ onMounted(()=>{
     console.log('slide changed', slider);
   });
 })
+
+function nextSlide() {
+  if (slider != null) {
+    slider.swiper.slideNext();
+  }
+}
+
+function prevSlide() {
+  if (slider != null) {
+    slider.swiper.slidePrev();
+  }
+}
 
 const onClickSlide = (region: IGeographicRegion) => {
   emit('onChange', region.slug);
@@ -66,6 +80,10 @@ const onClickSlide = (region: IGeographicRegion) => {
         </div>
       </swiper-slide>
     </swiper-container>
+    <div class="flex absolute bottom-5 gap-4 z-[9999] text-white navigations">
+      <div class="cursor-pointer" @click="prevSlide"><ArrowLongLeftIcon class="w-9 h-9"></ArrowLongLeftIcon></div>
+      <div class="cursor-pointer" @click="nextSlide"><ArrowLongRightIcon class="w-9 h-9"></ArrowLongRightIcon></div>
+    </div>
   </div>
 </template>
 
