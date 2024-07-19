@@ -13,10 +13,10 @@ const activeTab = ref<number>(0);
     <div class="flex gap-2">
       <div @click="activeTab=0" class="p-2 border-b-2 cursor-pointer border-transparent " :class="{
           '!border-blue-900 ': activeTab == 0
-        }">Общая информация</div>
+        }">Жалпы ақпарат</div>
       <div @click="activeTab=1" class="p-2 border-b-2 cursor-pointer border-transparent " :class="{
           '!border-blue-900': activeTab == 1
-        }">Информация о место</div>
+        }">Орын туралы ақпарат</div>
     </div>
     <GeographicInfoComponent v-if="activeTab==0" :region="geographic_region!"></GeographicInfoComponent>
     <div class="grid mt-4 gap-2 lg:grid-cols-[1fr_350px]" v-if="activeTab==1">
