@@ -12,7 +12,12 @@ export interface IGeographicRegion {
     population_count: number;
     parent_slug: string;
     level: number;
-    children: IGeographicRegion[] | null
+    children: IGeographicRegion[] | null,
+    info: {
+      value: string
+      key: string
+      title: string
+    }[]
 }
 
 export interface ICategory {
