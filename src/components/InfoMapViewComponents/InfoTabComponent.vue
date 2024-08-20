@@ -6,22 +6,33 @@ import ImageComponent from "@/components/ImageComponent.vue";
 
 const activeTab = ref<number>(0);
 
+function getTabText(region: any) {
+  if (region.level == 0) {
+    return 'Ауылдық округ'
+  }
+  else if (region.level == 1) {
+    return 'Ауыл'
+  }
+  return 'Қала'
+}
+
 </script>
 
 <template>
   <div class="p-4">
     <div class="flex gap-2">
-      <div @click="activeTab=0" class="p-2 border-b-2 cursor-pointer border-transparent " :class="{
+      <div @click="activeTab=0" class="p-2 border-b-2 text-nowrap text-sm cursor-pointer border-transparent " :class="{
           '!border-blue-900 ': activeTab == 0
         }">Жалпы ақпарат
       </div>
-      <div @click="activeTab=1" class="p-2 border-b-2 cursor-pointer border-transparent " :class="{
+      <div @click="activeTab=1" class="p-2 text-sm border-b-2 cursor-pointer border-transparent " :class="{
           '!border-blue-900': activeTab == 1
         }">Ақпараттар
       </div>
-      <div @click="activeTab=2" class="p-2 border-b-2 cursor-pointer border-transparent " :class="{
+      <div @click="activeTab=2" class="text-nowrap p-2 text-sm border-b-2 cursor-pointer border-transparent " :class="{
           '!border-blue-900': activeTab == 2
-        }">Орын туралы ақпарат
+        }">
+        {{getTabText(geographic_region)}}
       </div>
     </div>
     <GeographicInfoComponent v-if="activeTab==0" :region="geographic_region!"></GeographicInfoComponent>
