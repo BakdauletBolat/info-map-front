@@ -11,6 +11,7 @@ import SwiperSliderGeographic from "@/components/SwiperSliderGeographic.vue";
 import InfoTabComponent from "@/components/InfoMapViewComponents/InfoTabComponent.vue";
 import {initData, onChangeCity} from "@/domain/map-store.ts";
 import InfoMapSidebar from "@/components/InfoMapViewComponents/InfoMapSidebar.vue";
+import {NDrawer, NDrawerContent} from "naive-ui";
 
 const route = useRoute();
 const router = useRouter();
@@ -29,15 +30,17 @@ onMounted(()=>{
 </script>
 
 <template>
-  <ModalComponent :blured="true" v-model="showCity" class="z-[999999]">
+  <modal-component :blured="true" v-model="showCity" class="z-[999999]">
     <SwiperSliderGeographic @onChange="(slug: string)=>onChangeCity(router, slug)"
                             v-if="geographic_region"
                             :region="geographic_region">
     </SwiperSliderGeographic>
-  </ModalComponent>
-  <ModalComponent class="z-[999999]" v-model="showInfo">
-      <InfoTabComponent></InfoTabComponent>
-  </ModalComponent>
+  </modal-component>
+  <n-drawer placement="bottom" :z-index="100000" height="90%" class="z-[999999]" v-model:show="showInfo">
+      <n-drawer-content closable title="Акпараттар">
+        <info-tab-component></info-tab-component>
+      </n-drawer-content>
+  </n-drawer>
   <main
       class="flex w-full min-h-screen">
     <SidebarComponent v-model="showModal"

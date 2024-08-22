@@ -93,25 +93,7 @@ const getStyleContainer = (level: number) => {
         </div>
 
       </div>
-       <Disclosure v-if="region?.info" v-slot="{ open }">
-        <DisclosureButton
-          class="flex mt-4 w-full justify-between rounded-lg bg-purple-100 px-4 py-2 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500/75"
-        >
-          <span>Акпарттар</span>
-          <ChevronUpIcon
-            :class="open ? 'rotate-180 transform' : ''"
-            class="h-5 w-5 text-purple-500"
-          />
-        </DisclosureButton>
-        <DisclosurePanel class="px-4 pb-2 pt-4 text-sm text-gray-500">
-         <div class="flex flex-col gap-3">
-          <div class="flex justify-between w-full items-center" v-for="item in region?.info">
-            <div class="font-medium">{{item.title}}</div>
-            <div>{{item.value}}</div>
-          </div>
-        </div>
-        </DisclosurePanel>
-      </Disclosure>
+
     </div>
   </div>
   <div v-if="region?.children && region?.children?.length > 0" class="" v-for="child in region?.children">
