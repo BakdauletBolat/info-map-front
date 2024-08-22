@@ -10,11 +10,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ckeditor/ckeditor5-vue": "^7.0.0",
     "@headlessui/vue": "^1.7.22",
     "@heroicons/vue": "^2.1.4",
     "@maptiler/leaflet-maptilersdk": "^2.0.0",
     "autoprefixer": "^10.4.19",
     "axios": "^1.7.2",
+    "ckeditor5": "^43.0.0",
     "leaflet": "^1.9.4",
     "leaflet-draw": "^1.0.4",
     "swiper": "^11.1.4",
@@ -26,6 +28,7 @@
   "devDependencies": {
     "@types/leaflet": "^1.9.12",
     "@vitejs/plugin-vue": "^5.0.4",
+    "naive-ui": "^2.39.0",
     "tailwindcss": "^3.4.4",
     "typescript": "^5.2.2",
     "vite": "^5.2.0",

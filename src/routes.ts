@@ -25,9 +25,17 @@ const routes = [
         }
     },
     {
-        path: '/create-info',
-        name: 'create-info-view',
-        component: () => import('@/views/create-info-view.vue'),
+        path: '/editor/info/create-welcome',
+        name: 'editor-info-create-welcome',
+        component: () => import('@/views/editor-info-create-welcome.vue'),
+        meta: {
+            loginRequired: true
+        }
+    },
+    {
+        path: '/editor/info/create-form/:regionId/:categoryId',
+        name: 'editor-info-create-form',
+        component: () => import('@/views/editor-info-create-form.vue'),
         meta: {
             loginRequired: true
         }

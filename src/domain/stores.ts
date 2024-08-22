@@ -10,7 +10,7 @@ export const activeCategoryId = ref<number | null>(null);
 
 export const showCity = ref<boolean>(false);
 export const showInfo = ref<boolean>(false);
-
+export const isLoadingRegion = ref<boolean>(false);
 export const formForCreate = reactive<any>({});
 export const toRenderGeometries = computed(()=>{
     return geometries.value.map(item=>{
@@ -34,9 +34,12 @@ export const toRenderGeometries = computed(()=>{
 
 
 export const loadRegion = async (slug: string) => {
+    isLoadingRegion.value = true;
     await apiInstance.get<IGeographicResponse>('/api/region/'+slug)
         .then(res=>{
             geographic_region.value = res.data.region;
+        }).finally(()=>{
+            isLoadingRegion.value = false;
         })
 }
 
@@ -58,6 +61,11 @@ export const loadCategories = () => {
         .then((res)=>{
             categories.value = res.data;
         })
+}
+
+//#todo Создать апи по получение региона
+export const loadRegionById = () => {
+    return ''
 }
 
 export const setGeographicRegion = (region: IGeographicRegion) => {
