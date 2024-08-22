@@ -40,6 +40,12 @@ export const loadRegion = async (slug: string) => {
         })
 }
 
+export const authUser = async (body: object) => {
+    await apiInstance.post('/auth/token/', body).then(res=>{
+        localStorage.setItem("token", res.data.token);
+    })
+}
+
 export const loadGeometries = async (region_id: number | undefined) => {
     let url = '/api/geometries?geographic_region_id='+region_id;
     await apiInstance.get<IGeometryObject[]>(url).then(res=>{
@@ -57,3 +63,5 @@ export const loadCategories = () => {
 export const setGeographicRegion = (region: IGeographicRegion) => {
     geographic_region.value = region;
 }
+
+export const isAuthenticated = localStorage.getItem("token") != undefined;

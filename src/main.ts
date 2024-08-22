@@ -9,12 +9,23 @@ import 'vue3-toastify/dist/index.css';
 
 import routes from "./routes.ts";
 import {createWebHistory, createRouter} from "vue-router";
+import {isAuthenticated} from "@/domain/stores.ts";
 
 
 
 const router = createRouter({
     history: createWebHistory(),
     routes,
+})
+
+router.beforeEach(async (to, _) => {
+    if (
+        !isAuthenticated &&
+        to.name !== 'login-view' && to.meta.loginRequired
+    ) {
+        // redirect the user to the login page
+        return { name: 'login-view' }
+    }
 })
 
 createApp(App).use(router)
