@@ -1,5 +1,5 @@
 import {computed, reactive, ref} from "vue";
-import {ICategory, IGeographicRegion, IGeographicResponse, IGeometryObject} from "./models.ts";
+import {ICategory, IGeographicRegion, IGeographicResponse, IGeometryObject, IGetUpdateInfo} from "./models.ts";
 import apiInstance from "../api/instance.ts";
 
 export const geographic_region = ref<IGeographicRegion | null>();
@@ -12,6 +12,7 @@ export const showCity = ref<boolean>(false);
 export const showInfo = ref<boolean>(false);
 export const isLoadingRegion = ref<boolean>(false);
 export const formForCreate = reactive<any>({});
+export const updateInfo = ref<IGetUpdateInfo>();
 export const toRenderGeometries = computed(()=>{
     return geometries.value.map(item=>{
         let l = item.geometry;
@@ -44,9 +45,7 @@ export const loadRegion = async (slug: string) => {
 }
 
 export const authUser = async (body: object) => {
-    await apiInstance.post('/auth/token/', body).then(res=>{
-        localStorage.setItem("token", res.data.token);
-    })
+    return apiInstance.post('/auth/token/', body);
 }
 
 export const loadGeometries = async (region_id: number | undefined) => {
@@ -61,6 +60,12 @@ export const loadCategories = () => {
         .then((res)=>{
             categories.value = res.data;
         })
+}
+
+export const loadUpdateInfo = (category_id: string, region_slug: string) => {
+    apiInstance.get<IGetUpdateInfo>(`/api/region/get_update_info?category_id=${category_id}&region_slug=${region_slug}`).then(res=>{
+        updateInfo.value = res.data;
+    })
 }
 
 //#todo Создать апи по получение региона

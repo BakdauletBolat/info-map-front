@@ -5,7 +5,7 @@
   </div>
 </header>
   <main class="pt-4 bg-sky-50 min-h-screen">
-    <section class="container mx-auto h-full grid grid-cols-[200px_1fr]">
+    <section class="container px-4 mx-auto h-full grid grid-cols-[200px_1fr]">
       <aside>
         <n-steps vertical :current="current as number" :status="currentStatus">
           <n-step
@@ -33,7 +33,7 @@
   </main>
 </template>
 <script lang="ts" setup>
-import {computed, onMounted, ref, watch} from 'vue';
+import {computed, onMounted, ref} from 'vue';
 import {NSteps, NStep, NSelect, SelectOption,useMessage, NButton, NButtonGroup} from 'naive-ui';
 import {loadRegion, geographic_region,categories, loadCategories} from "@/domain/stores.ts";
 import {IGeographicRegion} from "@/domain/models.ts";

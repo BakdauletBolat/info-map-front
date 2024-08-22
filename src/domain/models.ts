@@ -46,3 +46,11 @@ export interface IGeometryObject {
 export interface IGeographicResponse {
     region: IGeographicRegion;
 }
+
+export interface IGetUpdateInfo {
+    region_name: string;
+    region_id: number;
+    description: string;
+    infos: any[];
+    category_name: string;
+} 

@@ -12,14 +12,20 @@
       <aside>
         <n-descriptions label-placement="top" :column="1">
           <n-descriptions-item label="Насаленный пункт">
-            {{ geographic_region?.name }}
+            {{ updateInfo?.region_name }}
           </n-descriptions-item>
           <n-descriptions-item label="Категория">
-            {{getCategoryById()}}
+            {{updateInfo?.category_name}}
           </n-descriptions-item>
         </n-descriptions>
       </aside>
       <main>
+        <div class="p-4 font-bold text-xl">Основные данные</div>
+        <div>
+          <quill-editor contentType="html" v-model:content="description" class="bg-white" toolbar="full" theme="snow" />
+        </div>
+
+        <div class="p-4 font-bold text-xl">Данные по категориям</div>
         <n-spin :show="isLoadingRegion">
           <n-dynamic-input
               v-model:value="value"
@@ -38,24 +44,29 @@ import {NButton, NDescriptions, NDescriptionsItem, NDynamicInput, useMessage, NS
 import {onMounted, ref, watch} from "vue";
 import apiInstance from "@/api/instance.ts";
 import {useRoute} from "vue-router";
-import {categories, geographic_region, isLoadingRegion, loadCategories, loadRegion} from "@/domain/stores.ts";
+import {updateInfo, isLoadingRegion, loadUpdateInfo} from "@/domain/stores.ts";
+import { QuillEditor } from '@vueup/vue-quill'
+import '@vueup/vue-quill/dist/vue-quill.snow.css';
+
 
 const route = useRoute();
 const message = useMessage()
+const description = ref('');
 const value = ref([{
   key: 'test',
   value: 'test-label'
 }]);
 const isLoading = ref(false);
 
-watch(geographic_region, (state)=>{
+watch(updateInfo, (state)=>{
   if (state != undefined) {
-    value.value = state!.info.map(item=>{
+    value.value = state!.infos.map(item=>{
       return {
         key: item.title,
         value: item.value
       }
     })
+    description.value = state.description
   }
 
 })
@@ -63,28 +74,25 @@ watch(geographic_region, (state)=>{
 
 
 onMounted(()=>{
-  loadCategories();
-  loadRegion(route.params.regionId.toString())
+  loadUpdateInfo(route.params.categoryId.toLocaleString(), route.params.regionId.toString());
 })
 
-function getCategoryById() {
-  const c = categories.value.find(item=>item.id==parseInt(route.params.categoryId.toString()));
-  if (c != undefined) {
-    return c.name;
-  }
-  return ''
-}
 
 function handleCreate() {
   isLoading.value = true;
-  const body = value.value.map(item=>{
+  const infos = value.value.map(item=>{
     return {
       title: item.key,
       value: item.value
     }
   })
-  apiInstance.post(`/api/region/${route.params.regionId}/update_info/`, body).then(_=>{
-    message.success("Успешно")
+  const body = {
+    information_keys: infos,
+    category_id: route.params.categoryId,
+    description: description.value
+  }
+  apiInstance.post(`/api/region/${updateInfo.value?.region_id}/update_info/`, body).then(_=>{
+    message.success("Успешно");
   }).catch(e=>{
     message.error("Что то не так "+e.toString());
   }).finally(()=>{

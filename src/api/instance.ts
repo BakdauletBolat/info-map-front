@@ -6,7 +6,9 @@ const apiInstance = axios.create({
 })
 
 apiInstance.interceptors.request.use(function (config) {
-    config.headers['Authorization'] = 'Token 0ee31e23f473bbbcdf5ab2be4dfa7cdff866083c'
+    if (localStorage.getItem("token") != null) {
+        config.headers['Authorization'] = `Token ${localStorage.getItem('token')}`   
+    }
     return config;
 },function (error) {
     return Promise.reject(error);

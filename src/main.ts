@@ -4,8 +4,9 @@ import App from './App.vue'
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-draw/dist/leaflet.draw.css';
 import 'leaflet';
-import Vue3Toasity, { type ToastContainerOptions } from 'vue3-toastify';
-import 'vue3-toastify/dist/index.css';
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+
 
 import routes from "./routes.ts";
 import {createWebHistory, createRouter} from "vue-router";
@@ -29,9 +30,4 @@ router.beforeEach(async (to, _) => {
 })
 
 createApp(App).use(router)
-    .use( Vue3Toasity,
-        {
-            position: "top-right",
-            autoClose: 3000,
-        } as ToastContainerOptions)
     .mount('#app')
