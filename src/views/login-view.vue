@@ -14,13 +14,13 @@
         </n-form-item>
       </n-form>
       <n-form-item>
-        <n-button @click="handleValidateClick" type="primary" class="w-full">Войти</n-button>
+        <n-button :loading="isLoading" @click="handleValidateClick" type="primary" class="w-full">Войти</n-button>
       </n-form-item>
     </n-card>
   </section>
 </template>
 <script lang="ts" setup>
-import { authUser } from '@/domain/stores';
+import {authUser, updateAuthenticationStatus} from '@/domain/stores';
 import { NCard,NForm,NFormItem, NInput, NButton, type FormInst, useMessage } from 'naive-ui';
 import {ref} from 'vue';
 import { useRouter } from 'vue-router';
@@ -29,6 +29,7 @@ const message = useMessage();
 const router = useRouter();
 
 const formRef = ref<FormInst | null>(null);
+const isLoading = ref<boolean>(false);
 const formValue = ref({
   username: null,
   password: null
@@ -48,16 +49,21 @@ const rules = {
 }
 
 async function handleValidateClick(e: MouseEvent) {
-    e.preventDefault()
+    e.preventDefault();
+    isLoading.value = true;
+    console.log("Handle click")
     formRef.value?.validate((errors) => {
       if (!errors) {
         authUser(formValue.value).then(res=>{
-          localStorage.setItem("token", res.data.token);
+          updateAuthenticationStatus(res.data.token)
           router.push({
             name: 'editor-info-create-welcome'
           });
+          message.success('Успешный вход!')
         }).catch(e=>{
           message.error('Пароль или логин не верный! '+e.toString())
+        }).finally(()=>{
+          isLoading.value = false;
         })
       }
       else {

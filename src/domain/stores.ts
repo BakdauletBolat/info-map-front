@@ -1,4 +1,4 @@
-import {computed, reactive, ref} from "vue";
+import {computed, reactive, ref, watch} from "vue";
 import {ICategory, IGeographicRegion, IGeographicResponse, IGeometryObject, IGetUpdateInfo} from "./models.ts";
 import apiInstance from "../api/instance.ts";
 
@@ -77,4 +77,23 @@ export const setGeographicRegion = (region: IGeographicRegion) => {
     geographic_region.value = region;
 }
 
-export const isAuthenticated = localStorage.getItem("token") != undefined;
+
+export const token = ref(localStorage.getItem("token"));
+
+// Watch for changes in localStorage
+watch(token, (newValue: any) => {
+    if (newValue) {
+        localStorage.setItem("token", newValue);
+    } else {
+        localStorage.removeItem("token");
+    }
+});
+
+// Function to update the authentication status
+export function updateAuthenticationStatus(v: string) {
+    token.value = v;
+}
+
+export const isAuthenticated = computed(()=>{
+    return token.value != null
+})
