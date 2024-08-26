@@ -24,7 +24,7 @@
       <main>
         <div class="p-4 font-bold text-xl">Основные данные</div>
         <div>
-          <!--          <quill-editor contentType="html" v-model:content="description" class="bg-white" toolbar="full" theme="snow" />-->
+          <quill-editor contentType="html" v-model:content="description" class="bg-white" toolbar="full" theme="snow"/>
         </div>
         <div class="p-4 font-bold text-xl">Данные по категориям</div>
         <n-spin :show="isLoadingRegion">
@@ -82,7 +82,7 @@ import '@vueup/vue-quill/dist/vue-quill.snow.css';
 const route = useRoute();
 const message = useMessage()
 const description = ref('');
-const pairs = ref([{key: '', value: '', children: [{key: '',value: ''}]}]);
+const pairs = ref([{key: '', value: '', children: [{key: '', value: ''}]}]);
 
 const isLoading = ref(false);
 
@@ -92,10 +92,10 @@ watch(updateInfo, (state) => {
       return {
         key: item.title,
         value: item.value,
-        children: item.children.map(item=>{
+        children: item.children.map((nitem:any) => {
           return {
-            key: item.title,
-            value: item.value
+            key: nitem.title,
+            value: nitem.value
           }
         })
       }
@@ -116,23 +116,23 @@ onMounted(() => {
 function getByCategoryChildren(categoryId: number) {
   if (categoryId == 1 && pairs.value.length > 0) {
     return [
-  {
-    key: 'Жалпы ұзындығы, км',
-    value: ''
-  },
-  {
-    key: 'Асфальт-бетонды, шқ. ',
-    value: ''
-  },
-  {
-    key: 'қиыршықтас, шқ.',
-    value: ''
-  },
-  {
-    key: 'топырақ , шқ.',
-    value: ''
-  }
-]
+      {
+        key: 'Жалпы ұзындығы, км',
+        value: ''
+      },
+      {
+        key: 'Асфальт-бетонды, шқ. ',
+        value: ''
+      },
+      {
+        key: 'қиыршықтас, шқ.',
+        value: ''
+      },
+      {
+        key: 'топырақ , шқ.',
+        value: ''
+      }
+    ]
   }
 
   return [{
@@ -165,12 +165,14 @@ function handleCreate() {
     return {
       title: item.key,
       value: item.value,
-      children: item.children.map(item=>{{
-        return {
-          title: item.key,
-          value: item.value
+      children: item.children.map(item => {
+        {
+          return {
+            title: item.key,
+            value: item.value
+          }
         }
-      }})
+      })
     }
   })
   const body = {

@@ -36,7 +36,7 @@ onMounted(()=>{
                             :region="geographic_region">
     </SwiperSliderGeographic>
   </modal-component>
-  <n-drawer placement="bottom" :z-index="100000" height="90%" class="z-[999999]" v-model:show="showInfo">
+  <n-drawer placement="bottom" :z-index="100000" height="90%" v-model:show="showInfo">
       <n-drawer-content closable title="Акпараттар">
         <info-tab-component></info-tab-component>
       </n-drawer-content>
