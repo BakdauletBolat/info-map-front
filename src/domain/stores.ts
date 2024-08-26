@@ -95,5 +95,5 @@ export function updateAuthenticationStatus(v: string) {
 }
 
 export const isAuthenticated = computed(()=>{
-    return token.value != null
+    return token.value != undefined
 })
