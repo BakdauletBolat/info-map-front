@@ -48,8 +48,8 @@
                         placeholder="Название значений"
                     />
                   </div>
-                  <h2 class="font-bold text-2xl">{{ value.key }} - {{ value.value }}</h2>
-                  <div v-if="pairs[index].children">
+                  <h2 v-if="pairs[index].children.length > 0" class="font-bold text-2xl">{{ value.key }} - {{ value.value }}</h2>
+                  <div v-if="pairs[index].children.length > 0">
                     <n-dynamic-input
                         v-model:value="pairs[index].children"
                         preset="pair"
@@ -135,10 +135,7 @@ function getByCategoryChildren(categoryId: number) {
     ]
   }
 
-  return [{
-    key: '',
-    value: ''
-  }]
+  return []
 }
 
 
