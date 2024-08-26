@@ -22,25 +22,59 @@
       <main>
         <div class="p-4 font-bold text-xl">Основные данные</div>
         <div>
-          <quill-editor contentType="html" v-model:content="description" class="bg-white" toolbar="full" theme="snow" />
+<!--          <quill-editor contentType="html" v-model:content="description" class="bg-white" toolbar="full" theme="snow" />-->
         </div>
-
         <div class="p-4 font-bold text-xl">Данные по категориям</div>
         <n-spin :show="isLoadingRegion">
+<!--            <n-dynamic-input-->
+<!--                v-model:value="value"-->
+<!--                preset="pair"-->
+<!--                key-placeholder="Название ключа"-->
+<!--                value-placeholder="Название значений"-->
+<!--            >-->
+<!--            </n-dynamic-input>-->
+<!--            >-->
           <n-dynamic-input
-              v-model:value="value"
+              v-model:value="pairs"
               preset="pair"
               key-placeholder="Название ключа"
               value-placeholder="Название значений"
-          />
+              :on-create="createPair"
+          >
+            <template #default="{ value, index }">
+              <div style="display: flex; align-items: center;">
+                <n-input
+                    v-model:value="value.key"
+                    placeholder="Название ключа"
+                    style="margin-right: 8px;"
+                />
+                <n-input
+                    v-model:value="value.value"
+                    placeholder="Название значений"
+                    style="margin-right: 8px;"
+                />
+                <n-button @click="addChild(index)" size="small">Добавить дочерний элемент</n-button>
+              </div>
+              <div v-if="pairs[index].children" style="margin-left: 20px; margin-top: 8px;">
+                <n-dynamic-input
+                    v-model:value="pairs[index].children"
+                    preset="pair"
+                    key-placeholder="Название дочернего ключа"
+                    value-placeholder="Название дочернего значения"
+                    :createable="true"
+                />
+              </div>
+            </template>
+          </n-dynamic-input>
         </n-spin>
+        {{pairs}}
         <n-button :loading="isLoading" type="primary" class="mt-4" @click="handleCreate">Создать / Обновить</n-button>
       </main>
     </section>
   </main>
 </template>
 <script lang="ts" setup>
-import {NButton, NDescriptions, NDescriptionsItem, NDynamicInput, useMessage, NSpin} from "naive-ui";
+import {NButton, NDescriptions, NDescriptionsItem, NDynamicInput,NInput, useMessage, NSpin} from "naive-ui";
 import {onMounted, ref, watch} from "vue";
 import apiInstance from "@/api/instance.ts";
 import {useRoute} from "vue-router";
@@ -54,7 +88,8 @@ const message = useMessage()
 const description = ref('');
 const value = ref([{
   key: 'test',
-  value: 'test-label'
+  value: 'test-label',
+  children: []
 }]);
 const isLoading = ref(false);
 
@@ -63,7 +98,8 @@ watch(updateInfo, (state)=>{
     value.value = state!.infos.map(item=>{
       return {
         key: item.title,
-        value: item.value
+        value: item.value,
+        children: item.children
       }
     })
     description.value = state.description
@@ -72,11 +108,29 @@ watch(updateInfo, (state)=>{
 })
 
 
-
 onMounted(()=>{
   loadUpdateInfo(route.params.categoryId.toLocaleString(), route.params.regionId.toString());
 })
 
+const pairs = ref([{ key: '', value: '', children: []}]);
+const children = ref({});
+
+function createPair(index) {
+  // Убедитесь, что каждый новый элемент корректно инициализирован
+  return {
+    key: '',
+    value: '',
+    children: []
+  }
+}
+
+function addChild(parentIndex) {
+  if (!pairs.value[parentIndex].children) {
+    pairs.value[parentIndex].children = [{ key: '', value: '' }];
+  } else {
+    pairs.value[parentIndex].children.push({ key: '', value: '' });
+  }
+}
 
 function handleCreate() {
   isLoading.value = true;

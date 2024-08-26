@@ -91,9 +91,7 @@ const getStyleContainer = (level: number) => {
             <span>{{ region?.dwelling_count }}</span>
           </div>
         </div>
-
       </div>
-
     </div>
   </div>
   <div v-if="region?.children && region?.children?.length > 0" class="" v-for="child in region?.children">
