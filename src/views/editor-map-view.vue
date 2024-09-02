@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { toast } from "vue3-toastify";
 import {computed, onMounted, ref, watch, watchEffect} from "vue";
 import {useRoute} from "vue-router";
 import 'vue-select/dist/vue-select.css';
@@ -22,9 +21,11 @@ import ImageComponent from "@/components/ImageComponent.vue";
 import {ICategory} from "@/domain/models.ts";
 import InputComponent from "@/components/InputComponent.vue";
 import instance from "@/api/instance.ts";
+import {useMessage} from "naive-ui";
 
 const route = useRoute();
 const modal = ref<boolean>(true);
+const message = useMessage();
 const selectedCity = ref<any | null>(null);
 const showCategory = ref<boolean>(false);
 const category = ref<ICategory | null>(null)
@@ -160,11 +161,7 @@ const onSuccessSave = async () => {
   await loadGeometries(geographic_region?.value?.id);
   updateGeoJson(layer);
   createModal.value = false;
-  toast("Успешно добавлено!", {
-    "theme": "auto",
-    "type": "success",
-    "dangerouslyHTMLString": true
-  })
+  message.success("Успешно добавлено!")
 }
 
 const onSaveGeometryObject = () => {
@@ -182,11 +179,7 @@ const onSaveGeometryObject = () => {
     onSuccessSave();
   }).catch(e=>{
     console.log(e);
-    toast("Ошибка при сохранений! "+e.toString(), {
-      "theme": "auto",
-      "type": "warning",
-      "dangerouslyHTMLString": true
-    })
+    message.error("Ошибка при сохранений! "+e.toString())
   })
       .finally(()=>isLoading.value=false);
 }
