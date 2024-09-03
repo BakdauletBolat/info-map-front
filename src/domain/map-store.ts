@@ -107,6 +107,22 @@ const renderPopup = (feature: any) => {
   return html;
 };
 
+const generateColor = (renovated_at: string) => {
+  const date = new Date(renovated_at);
+  const greenTime = 157788000000;
+  const yellowTime = 63072000000;
+  const nowDate = Date.now();
+  const diff = nowDate - date;
+  if (diff < yellowTime) {
+    return "green";
+  }
+  if (diff > yellowTime && diff < greenTime) {
+    return "yellow";
+  }
+
+  return "red";
+};
+
 const initGeometryObjectsLayer = () => {
   if (layer == null) {
     layer = L.geoJSON(
@@ -119,10 +135,14 @@ const initGeometryObjectsLayer = () => {
       },
       {
         style(layer: any) {
+          let color = "red";
+          if (layer.properties?.renovated_at != undefined) {
+            color = generateColor(layer.properties.renovated_at);
+          }
           if (layer.geometry.type == "LineString") {
             return {
-              weight: 1,
-              color: "red",
+              weight: 3,
+              color: color,
             };
           }
           return {
@@ -133,6 +153,11 @@ const initGeometryObjectsLayer = () => {
         onEachFeature(feature, layer) {
           const zooMarkerPopup = L.popup().setContent(renderPopup(feature));
           layer.bindPopup(zooMarkerPopup);
+          layer.bindTooltip(feature.properties?.title ?? "Тест", {
+            permanent: true,
+            direction: "bottom",
+            offset: [0, -10],
+          });
         },
         filter: function (feature: GeoJSON, _: any) {
           return feature.properties.show_on_map;
