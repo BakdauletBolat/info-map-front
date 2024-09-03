@@ -73,8 +73,6 @@ const options = computed(() => {
     // if (geographic_region.value?.children)
 });
 
-const f = ref(12123123);
-
 const fieldsForCreate = [
     {
         value: "title",

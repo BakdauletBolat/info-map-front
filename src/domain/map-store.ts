@@ -112,6 +112,7 @@ const generateColor = (renovated_at: string) => {
   const greenTime = 157788000000;
   const yellowTime = 63072000000;
   const nowDate = Date.now();
+  //@ts-ignore
   const diff = nowDate - date;
   if (diff < yellowTime) {
     return "green";
