@@ -103,6 +103,7 @@ const renderPopup = (feature: any) => {
             </div>
         `;
   });
+  html += `<a href='/geometry/editor/${feature.properties.id}'>Редактировать</a>`
   html += "</article>";
   return html;
 };
@@ -159,6 +160,7 @@ const initGeometryObjectsLayer = () => {
             permanent: true,
             direction: "bottom",
             offset: [0, -10],
+            interactive: true
           });
         },
         filter: function (feature: GeoJSON, _: any) {

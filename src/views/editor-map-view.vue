@@ -30,6 +30,7 @@ import { ICategory } from "@/domain/models.ts";
 import InputComponent from "@/components/InputComponent.vue";
 import instance from "@/api/instance.ts";
 import { useMessage, NDatePicker } from "naive-ui";
+import {getPolylineType, getCoordinates} from "@/utils.ts";
 
 const route = useRoute();
 const modal = ref<boolean>(true);
@@ -132,38 +133,6 @@ const getGeometryCollection = (layers: any) => {
         });
     });
     return geometriesBody;
-};
-
-const getPolylineType = (type: string) => {
-    switch (type) {
-        case "marker":
-            return "Point";
-        case "polyline":
-            return "LineString";
-        case "polygon":
-            return "Polygon";
-    }
-    return "";
-};
-
-const getCoordinates = (layer: any) => {
-    if (layer.layerType == "marker") {
-        return [layer._latlng.lng, layer._latlng.lat];
-    }
-    if (layer.layerType == "polygon") {
-        const coors: any[] = [];
-        layer._latlngs.forEach((layers: any) => {
-            layers.forEach((layer: any) => {
-                coors.push([layer.lng, layer.lat]);
-            });
-        });
-        return [coors];
-    }
-    const coors: any[] = [];
-    layer._latlngs.forEach((layer: any) => {
-        coors.push([layer.lng, layer.lat]);
-    });
-    return coors;
 };
 
 const onSuccessSave = async () => {

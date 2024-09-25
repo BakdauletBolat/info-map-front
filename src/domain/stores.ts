@@ -29,6 +29,7 @@ export const toRenderGeometries = computed(() => {
     l.features.forEach((c) => {
       c.properties.icon_url = item.category.icon;
       c.properties.category_id = item.category.id;
+      c.properties.id = item.id;
       if (activeCategoryId.value == null) {
         c.properties.show_on_map = true;
       } else {

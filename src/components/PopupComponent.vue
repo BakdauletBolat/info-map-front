@@ -1,24 +1,28 @@
 <template>
-  <article>
-    <div v-for="(value, key) in propertiesToShow" :key="key" class="flex gap-2">
-      <strong>{{ getTitle(key) }}: {{ value }}</strong>
+  <article class="w-[300px]">
+    <div v-if="geometry">
+      <div v-if="geometry.category.id == 1">
+        <RoadForm :layer="layer"></RoadForm>
+      </div>
+      <div v-else>
+        <DefaultForm :layer="layer" :fields-for-edit="defaultEditFields"></DefaultForm>
+      </div>
     </div>
-    <a :href="'/editor/geometry/' + geometryId">редактировать</a>
   </article>
 </template>
 
 <script lang="ts" setup>
-  import { computed } from 'vue'
-  const props = defineProps(['feature', 'transcryptor', 'geometryId'])
+  import {geometry} from "@/domain/stores.ts";
+  import RoadForm from "@/components/PopupForms/RoadForm.vue";
+  import DefaultForm from "@/components/PopupForms/DefaultForm.vue";
 
-  const propertiesToShow = computed(() => {
-    const excludeKeys = ['category_id', 'show_on_map', 'icon_url']
-    return Object.fromEntries(
-      Object.entries(props.feature.properties).filter(([key]) => !excludeKeys.includes(key))
-    )
-  })
+  const defaultEditFields = [{
+    key: 'title',
+    type: 'text',
+  }, {
+    key: 'description',
+    type: 'text',
+  }]
 
-  const getTitle = (key: string) => {
-    return props.transcryptor[key] || key
-  }
+  defineProps(['layer'])
 </script>

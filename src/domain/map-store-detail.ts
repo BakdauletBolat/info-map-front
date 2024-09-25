@@ -1,15 +1,14 @@
 import {
-    activeCategoryId,
-    geographic_region, geometries, geometry,
-    loadGeometries, loadGeometry,
-    loadRegion,
-    showCity,
-    toRenderGeometries,
+    activeCategoryId,geometry,
+    loadGeometry
 } from "@/domain/stores.ts";
+
 import L, { Layer, Map } from "leaflet";
-import { GeoJSON } from "@/domain/models.ts";
-import { ref, watch } from "vue";
+import {ref, watch, render, h, reactive} from "vue";
 import "@maptiler/leaflet-maptilersdk";
+import PopupComponent from "@/components/PopupComponent.vue";
+import instance from "@/api/instance.ts";
+import {getGeometryCollection} from "@/utils.ts";
 
 export let map: Map | null = null;
 export let layer: Layer | null = null;
@@ -80,29 +79,11 @@ const transcryptor = {
     description: "Сипаттама",
 };
 
-const renderPopup = (feature: any) => {
-    let html = "<article>";
-    Object.keys(feature.properties).forEach((key: string) => {
-        if (["category_id", "show_on_map", "icon_url"].includes(key)) {
-            return;
-        }
-        let title = "";
-        // @ts-ignore
-        if (transcryptor[key] != undefined) {
-            // @ts-ignore
-            title = transcryptor[key];
-        } else {
-            title = key;
-        }
-        html += `
-            <div class="flex gap-2">
-            <strong>${title}:</strong>
-            <div>${feature.properties[key]}</div>
-            </div>
-        `;
-    });
-    html += "</article>";
-    return html;
+const renderPopup = (layer: any) => {
+    const container = document.createElement('div');
+    const node = h(PopupComponent, {layer});
+    render(node, container)
+    return container;
 };
 
 const generateColor = (renovated_at: string) => {
@@ -122,68 +103,10 @@ const generateColor = (renovated_at: string) => {
     return "red";
 };
 
-const initGeometryObjectsLayer = () => {
-    if (layer == null) {
-        layer = L.geoJSON(
-            {
-                type: "Feature",
-                //@ts-ignore
-                properties: {
-                    show_on_map: true,
-                },
-            },
-            {
-                style(layer: any) {
-                    let color = "red";
-                    if (layer.properties?.renovated_at != undefined) {
-                        color = generateColor(layer.properties.renovated_at);
-                    }
-                    if (layer.geometry.type == "LineString") {
-                        return {
-                            weight: 3,
-                            color: color,
-                        };
-                    }
-                    return {
-                        weight: 1,
-                        color: "#B2ABF2",
-                    };
-                },
-                onEachFeature(feature, layer) {
-                    // if (layer instanceof L.Polygon || layer instanceof L.Polyline) {
-                    //     layer.editing.enable(); // Включаем редактирование
-                    //     layer.on('edit', function() {
-                    //         console.log(feature.properties.name + ' was edited!');
-                    //     });
-                    // }
-                    const zooMarkerPopup = L.popup().setContent(renderPopup(feature));
-                    layer.bindPopup(zooMarkerPopup);
-                    layer.bindTooltip(feature.properties?.title ?? "Тест", {
-                        permanent: true,
-                        direction: "bottom",
-                        offset: [0, -10],
-                    });
-                },
-                pointToLayer(feature: any, lat_lng: any) {
-                    const icon = L.icon({
-                        iconUrl: feature.properties.icon_url
-                            ? feature.properties.icon_url
-                            : "https://cdn-icons-png.freepik.com/256/4903/4903621.png?semt=ais_hybrid",
-                        iconSize: [32, 37],
-                        iconAnchor: [16, 37],
-                        popupAnchor: [0, -28],
-                    });
-                    return L.marker(lat_lng, { icon: icon });
-                },
-            },
-        ).addTo(map!);
-    }
-};
 
 export const initData = async (region_id: number) => {
     await loadGeometry(region_id);
     initMap();
-    initGeometryObjectsLayer();
     initDraw();
 };
 
@@ -191,21 +114,52 @@ export const initData = async (region_id: number) => {
 const negative = (coors) => {
     return coors.map(coor=>[coor[1], coor[0]]);
 }
+
+const negativeOne = (coors) => {
+    return [coors[1], coors[0]];
+}
+
+const initDrawerObjects = (layer: L.FeatureGroup) => {
+    geometry.value?.geometry.features.map(feature=>{
+        console.log(feature.geometry.type, feature.geometry)
+        if (feature.geometry.type == 'LineString') {
+            const lineString = new L.polyline(negative(feature.geometry.coordinates), {}).addTo(map);
+            lineString.layerType = "polyline";
+            lineString.properties = feature.properties;
+            const zooMarkerPopup = L.popup().setContent(renderPopup(lineString));
+            lineString.bindPopup(zooMarkerPopup);
+            lineString.bindTooltip(feature.properties?.title ?? "Тест", {
+                permanent: true,
+                direction: "bottom",
+                offset: [0, -10],
+                interactive: true
+            });
+            layer.addLayer(lineString);
+        }
+        if (feature.geometry.type == 'Point') {
+            const icon = L.icon({
+                iconUrl: feature.properties.icon_url
+                    ? feature.properties.icon_url
+                    : "https://cdn-icons-png.freepik.com/256/4903/4903621.png?semt=ais_hybrid",
+                iconSize: [32, 37],
+                iconAnchor: [16, 37],
+                popupAnchor: [0, -28],
+            });
+            const lineString = new L.marker(negativeOne(feature.geometry.coordinates), {icon: icon}).addTo(map);
+            lineString.layerType = "marker";
+            lineString.properties = feature.properties;
+            const zooMarkerPopup = L.popup().setContent(renderPopup(lineString));
+            lineString.bindPopup(zooMarkerPopup);
+            layer.addLayer(lineString);
+        }
+
+    })
+}
 export const initDraw = () => {
     if (drawnItems == null) {
         drawnItems = new L.FeatureGroup();
-        //@ts-ignore
-        geometry.value?.geometry.features.map(feature=>{
-            console.log(feature.geometry.type, feature.geometry.coordinates)
-            if (feature.geometry.type == 'LineString') {
-                const a = new L.polyline(negative(feature.geometry.coordinates), {}).addTo(map);
-                console.log(a);
-                drawnItems.addLayer(a);
-            }
-        })
+        initDrawerObjects(drawnItems);
         map!.addLayer(drawnItems);
-
-
     }
 
     if (drawControl == null) {
@@ -234,6 +188,14 @@ export const initDraw = () => {
             const layer = event.layer;
             // @ts-ignore
             layer.layerType = event.layerType;
+            const zooMarkerPopup = L.popup().setContent(renderPopup(null));
+            layer.bindPopup(zooMarkerPopup);
+            layer.bindTooltip("Новая", {
+                permanent: true,
+                direction: "bottom",
+                offset: [0, -10],
+                interactive: true
+            });
             drawnItems.addLayer(layer);
             createModal.value = true;
         });
@@ -260,3 +222,13 @@ export function removeControl() {
 watch(activeCategoryId, () => {
     updateGeoJson(layer);
 });
+
+
+export const save = (id: string) => {
+    const geometriesBody = getGeometryCollection(drawnItems._layers);
+    instance.put("/api/geometries/"+id+"/", {
+        info: geometry.value?.info,
+        geometry: geometriesBody
+    }).then(response => console.log(response)).catch(e=>{console.log(e)});
+}
+
