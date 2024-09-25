@@ -152,6 +152,7 @@ const initGeometryObjectsLayer = () => {
           };
         },
         onEachFeature(feature, layer) {
+
           const zooMarkerPopup = L.popup().setContent(renderPopup(feature));
           layer.bindPopup(zooMarkerPopup);
           layer.bindTooltip(feature.properties?.title ?? "Тест", {

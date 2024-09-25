@@ -1,0 +1,6 @@
+{
+  "formatOnSave": true,
+  "formatters": {
+    "*.vue": "prettier"
+  }
+}

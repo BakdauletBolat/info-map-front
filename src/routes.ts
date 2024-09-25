@@ -25,6 +25,14 @@ const routes = [
         }
     },
     {
+        path: '/geometry/editor/:id',
+        name: 'editor-map-view-detail',
+        component: () => import('@/views/editor-map-view-detail.vue'),
+        meta: {
+            loginRequired: true
+        }
+    },
+    {
         path: '/editor/info/create-welcome',
         name: 'editor-info-create-welcome',
         component: () => import('@/views/editor-info-create-welcome.vue'),

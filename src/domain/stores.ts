@@ -11,6 +11,7 @@ import apiInstance from "../api/instance.ts";
 export const geographic_region = ref<IGeographicRegion | null>();
 export const categories = ref<ICategory[]>([]);
 export const geometries = ref<IGeometryObject[]>([]);
+export const geometry = ref<IGeometryObject>();
 
 export const activeCategoryId = ref<number | null>(null);
 
@@ -59,6 +60,13 @@ export const loadGeometries = async (region_id: number | undefined) => {
   let url = "/api/geometries?geographic_region_id=" + region_id;
   await apiInstance.get<IGeometryObject[]>(url).then((res) => {
     geometries.value = res.data;
+  });
+};
+
+export const loadGeometry = async (geometry_id: number) => {
+  let url = "/api/geometries/" + geometry_id;
+  await apiInstance.get<IGeometryObject>(url).then((res) => {
+    geometry.value = res.data;
   });
 };
 
