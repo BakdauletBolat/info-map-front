@@ -18,19 +18,20 @@ import {
 //@ts-ignore
 import VueSelect from "vue-select";
 import {
-    categories,
-    formForCreate,
-    geographic_region,
-    loadCategories,
-    loadGeometries,
+  categories,
+  formForCreate,
+  geographic_region, geometry,
+  loadCategories,
+  loadGeometries,
 } from "@/domain/stores.ts";
 import ModalComponent from "@/components/ModalComponent.vue";
 import ImageComponent from "@/components/ImageComponent.vue";
 import { ICategory } from "@/domain/models.ts";
 import InputComponent from "@/components/InputComponent.vue";
 import instance from "@/api/instance.ts";
-import { useMessage, NDatePicker } from "naive-ui";
-import {getPolylineType, getCoordinates} from "@/utils.ts";
+import {useMessage, NDatePicker, NButton} from "naive-ui";
+import {getPolylineType, getCoordinates, getGeometryCollection} from "@/utils.ts";
+import {save} from "@/domain/map-store-detail.ts";
 
 const route = useRoute();
 const modal = ref<boolean>(true);
@@ -82,12 +83,7 @@ const fieldsForCreate = [
     {
         value: "description",
         placeholder: "Описание",
-    },
-    {
-        value: "renovated_at",
-        placeholder: "Дата последнего ремонта",
-        type: "date",
-    },
+    }
 ];
 
 watch(selectedCity, (n, _) => {
@@ -115,25 +111,6 @@ const onClickCategory = (selectedCategory: ICategory) => {
     showCategory.value = false;
 };
 
-const getGeometryCollection = (layers: any) => {
-    let geometriesBody = {
-        features: [],
-    };
-
-    Object.keys(layers).forEach((key) => {
-        //@ts-ignore
-        geometriesBody.features.push({
-            //@ts-ignore
-            properties: formForCreate,
-            //@ts-ignore
-            geometry: {
-                type: getPolylineType(layers[key].layerType),
-                coordinates: getCoordinates(layers[key]),
-            },
-        });
-    });
-    return geometriesBody;
-};
 
 const onSuccessSave = async () => {
     drawnItems.clearLayers();
@@ -260,6 +237,10 @@ onMounted(() => {
             </div>
         </ModalComponent>
         <section class="w-full">
+          <div class="w-full absolute bottom-5 z-[909999] right-0 flex justify-end gap-3 p-3">
+            <n-button type="primary" @click="()=>onSaveGeometryObject()">Сохранить</n-button>
+            <n-button type="info" @click="()=>createModal = true">Открыть форму</n-button>
+          </div>
             <div :style="{ width: '100%', height: '100%' }" id="map"></div>
         </section>
     </main>

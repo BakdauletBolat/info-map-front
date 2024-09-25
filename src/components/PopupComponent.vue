@@ -8,6 +8,9 @@
         <DefaultForm :layer="layer" :fields-for-edit="defaultEditFields"></DefaultForm>
       </div>
     </div>
+    <div v-else>
+      <road-form :layer="layer"></road-form>
+    </div>
   </article>
 </template>
 
@@ -21,7 +24,7 @@
     type: 'text',
   }, {
     key: 'description',
-    type: 'text',
+    type: 'text'
   }]
 
   defineProps(['layer'])

@@ -224,11 +224,13 @@ watch(activeCategoryId, () => {
 });
 
 
-export const save = (id: string) => {
+export const save = async (id: string) => {
     const geometriesBody = getGeometryCollection(drawnItems._layers);
-    instance.put("/api/geometries/"+id+"/", {
+    return instance.put("/api/geometries/"+id+"/", {
         info: geometry.value?.info,
         geometry: geometriesBody
-    }).then(response => console.log(response)).catch(e=>{console.log(e)});
+    }).then(response => instance.get("/api/geometries/"+id+"/").then(res=>{
+        geometry.value = res.data;
+    }));
 }
 

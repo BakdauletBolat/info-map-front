@@ -8,8 +8,9 @@ import {
 } from "@/domain/stores.ts";
 import L, { Layer, Map } from "leaflet";
 import { GeoJSON } from "@/domain/models.ts";
-import { ref, watch } from "vue";
+import {h, ref, render, watch} from "vue";
 import "@maptiler/leaflet-maptilersdk";
+import PopupComponent from "@/components/PopupComponent.vue";
 
 export let map: Map | null = null;
 export let layer: Layer | null = null;
@@ -205,6 +206,13 @@ export const onChangeCity = async (router: any, slug: string) => {
   );
 };
 
+const renderAddPopup = (layer: any) => {
+  const container = document.createElement('div');
+  const node = h(PopupComponent, {layer});
+  render(node, container)
+  return container;
+};
+
 export const initDraw = () => {
   if (drawnItems == null) {
     drawnItems = new L.FeatureGroup();
@@ -237,12 +245,19 @@ export const initDraw = () => {
       const layer = event.layer;
       // @ts-ignore
       layer.layerType = event.layerType;
+      layer.properties = {}
+      const popUpForDraw = L.popup().setContent(renderAddPopup(layer));
+      layer.bindPopup(popUpForDraw);
+      layer.bindTooltip("Новая", {
+        permanent: true,
+        direction: "bottom",
+        offset: [0, -10],
+        interactive: true
+      });
       drawnItems.addLayer(layer);
-      createModal.value = true;
     });
     // @ts-ignore
     map!.on(L.Draw.Event.EDITED, function (_) {
-      createModal.value = true;
     });
   }
 };
