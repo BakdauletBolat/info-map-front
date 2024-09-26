@@ -20,7 +20,7 @@ import VueSelect from "vue-select";
 import {
   categories,
   formForCreate,
-  geographic_region, geometry,
+  geographic_region, geometry, isLoadingGeometries,
   loadCategories,
   loadGeometries,
 } from "@/domain/stores.ts";
@@ -29,9 +29,8 @@ import ImageComponent from "@/components/ImageComponent.vue";
 import { ICategory } from "@/domain/models.ts";
 import InputComponent from "@/components/InputComponent.vue";
 import instance from "@/api/instance.ts";
-import {useMessage, NDatePicker, NButton} from "naive-ui";
-import {getPolylineType, getCoordinates, getGeometryCollection} from "@/utils.ts";
-import {save} from "@/domain/map-store-detail.ts";
+import {useMessage, NDatePicker, NButton, NSpin} from "naive-ui";
+import {getGeometryCollection} from "@/utils.ts";
 
 const route = useRoute();
 const modal = ref<boolean>(true);
@@ -106,8 +105,10 @@ watchEffect(() => {
     }
 });
 
-const onClickCategory = (selectedCategory: ICategory) => {
+const onClickCategory = async (selectedCategory: ICategory) => {
     category.value = selectedCategory;
+    await loadGeometries(geographic_region.value.id, [selectedCategory.id]);
+    updateGeoJson(layer);
     showCategory.value = false;
 };
 
@@ -117,7 +118,7 @@ const onSuccessSave = async () => {
     Object.keys(formForCreate).forEach((item) => {
         formForCreate[item] = "";
     });
-    await loadGeometries(geographic_region?.value?.id);
+    await loadGeometries(geographic_region?.value?.id, [category.value.id]);
     updateGeoJson(layer);
     createModal.value = false;
     message.success("Успешно добавлено!");
@@ -154,11 +155,12 @@ onMounted(() => {
             formForCreate[item.value] = "";
         }
     });
-    initData(route.params.slug.toString(), true);
+    initData(route.params.slug.toString(), true, []);
 });
 </script>
 
 <template>
+  <n-spin :show="isLoadingGeometries">
     <main class="flex w-full min-h-screen">
         <SidebarComponent class="flex-shrink-0" v-model="modal">
             <div class="p-4">
@@ -238,12 +240,13 @@ onMounted(() => {
         </ModalComponent>
         <section class="w-full">
           <div class="w-full absolute bottom-5 z-[909999] right-0 flex justify-end gap-3 p-3">
-            <n-button type="primary" @click="()=>onSaveGeometryObject()">Сохранить</n-button>
+            <n-button :disabled="isLoading" :loading="isLoading" type="primary" @click="()=>onSaveGeometryObject()">Сохранить</n-button>
             <n-button type="info" @click="()=>createModal = true">Открыть форму</n-button>
           </div>
             <div :style="{ width: '100%', height: '100%' }" id="map"></div>
         </section>
     </main>
+  </n-spin>
 </template>
 
 <style scoped></style>

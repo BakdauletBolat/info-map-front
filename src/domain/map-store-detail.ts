@@ -47,8 +47,8 @@ export const initMap = () => {
         map = L.map("map", {
             layers: [mtLayer],
         }).setView(
-            [43.03438595653483,69.37031728244519],
-            15
+            [geometry.value.region.latitude,geometry.value.region.longitude],
+            geometry.value.region.zoom
         );
         //@ts-ignore
         map?.attributionControl.remove();
@@ -145,12 +145,28 @@ const initDrawerObjects = (layer: L.FeatureGroup) => {
                 iconAnchor: [16, 37],
                 popupAnchor: [0, -28],
             });
-            const lineString = new L.marker(negativeOne(feature.geometry.coordinates), {icon: icon}).addTo(map);
-            lineString.layerType = "marker";
-            lineString.properties = feature.properties;
-            const zooMarkerPopup = L.popup().setContent(renderPopup(lineString));
-            lineString.bindPopup(zooMarkerPopup);
-            layer.addLayer(lineString);
+            const pointLayer = new L.marker(negativeOne(feature.geometry.coordinates), {icon: icon}).addTo(map);
+            pointLayer.layerType = "marker";
+            pointLayer.properties = feature.properties;
+            const zooMarkerPopup = L.popup().setContent(renderPopup(pointLayer));
+            pointLayer.bindPopup(zooMarkerPopup);
+            layer.addLayer(pointLayer);
+        }
+
+        if (feature.geometry.type == 'Polygon') {
+            console.log('asdasdasd', feature.geometry.coordinates)
+            const polygonLayer = new L.polygon(negative(feature.geometry.coordinates[0]), {}).addTo(map);
+            polygonLayer.layerType = "polygon";
+            polygonLayer.properties = feature.properties;
+            const zooMarkerPopup = L.popup().setContent(renderPopup(polygonLayer));
+            polygonLayer.bindPopup(zooMarkerPopup);
+            polygonLayer.bindTooltip(feature.properties?.title ?? "Тест", {
+                permanent: true,
+                direction: "bottom",
+                offset: [0, -10],
+                interactive: true
+            });
+            layer.addLayer(polygonLayer);
         }
 
     })

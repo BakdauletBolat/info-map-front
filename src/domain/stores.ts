@@ -11,8 +11,10 @@ import apiInstance from "../api/instance.ts";
 export const geographic_region = ref<IGeographicRegion | null>();
 export const categories = ref<ICategory[]>([]);
 export const geometries = ref<IGeometryObject[]>([]);
-export const geometry = ref<IGeometryObject>();
+export const isLoadingGeometries = ref<boolean>(false);
 
+export const geometry = ref<IGeometryObject>();
+export const isLoadingGeometry = ref<boolean>(false);
 export const activeCategoryId = ref<number | null>(null);
 
 export const showCity = ref<boolean>(false);
@@ -57,18 +59,23 @@ export const authUser = async (body: object) => {
   return apiInstance.post("/auth/token/", body);
 };
 
-export const loadGeometries = async (region_id: number | undefined) => {
+export const loadGeometries = async (region_id: number | undefined, categories: []) => {
   let url = "/api/geometries?geographic_region_id=" + region_id;
+  if (categories.length > 0) {
+    url += '&category_ids='+categories.join(',')
+  }
+  isLoadingGeometries.value = true;
   await apiInstance.get<IGeometryObject[]>(url).then((res) => {
     geometries.value = res.data;
-  });
+  }).finally(()=>{isLoadingGeometries.value=false});
 };
 
 export const loadGeometry = async (geometry_id: number) => {
   let url = "/api/geometries/" + geometry_id;
+  isLoadingGeometry.value = true;
   await apiInstance.get<IGeometryObject>(url).then((res) => {
     geometry.value = res.data;
-  });
+  }).finally(()=>isLoadingGeometry.value = false);
 };
 
 export const loadCategories = () => {

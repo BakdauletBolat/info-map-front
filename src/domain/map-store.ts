@@ -184,9 +184,9 @@ const initGeometryObjectsLayer = () => {
   updateGeoJson(layer);
 };
 
-export const initData = async (slug: string, isInitDraw: boolean = false) => {
+export const initData = async (slug: string, isInitDraw: boolean = false, categories: number[]) => {
   await loadRegion(slug);
-  await loadGeometries(geographic_region?.value?.id);
+  await loadGeometries(geographic_region?.value?.id, categories);
   initMap();
   initGeometryObjectsLayer();
   if (isInitDraw) {
