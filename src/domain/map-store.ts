@@ -196,7 +196,7 @@ export const initData = async (slug: string, isInitDraw: boolean = false, catego
 
 export const onChangeCity = async (router: any, slug: string) => {
   await router.push({ name: "info-map-view", params: { slug: slug } });
-  await initData(slug);
+  await initData(slug, false, []);
   showCity.value = false;
   mapSetView(
     map!,

@@ -40,7 +40,8 @@ export interface IGeometry {
 export interface IGeometryObject {
     geometry: GeoJSON;
     info: Record<string, any>;
-    category: ICategory
+    category: ICategory;
+    id: number;
 }
 
 export interface IGeographicResponse {

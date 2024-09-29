@@ -24,7 +24,7 @@ onMounted(()=>{
   if (document.body.offsetWidth <= 400) {
     showModal.value = false;
   }
-  initData(route.params.slug.toString());
+  initData(route.params.slug.toString(), false, []);
 });
 
 </script>
