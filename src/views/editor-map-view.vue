@@ -20,7 +20,7 @@ import VueSelect from "vue-select";
 import {
   categories,
   formForCreate,
-  geographic_region, geometry, isLoadingGeometries,
+  geographic_region, isLoadingGeometries,
   loadCategories,
   loadGeometries,
 } from "@/domain/stores.ts";
@@ -77,10 +77,12 @@ const options = computed(() => {
 const fieldsForCreate = [
     {
         value: "title",
+        type: "text",
         placeholder: "Загаловок",
     },
     {
         value: "description",
+        type: "text",
         placeholder: "Описание",
     }
 ];
@@ -107,7 +109,7 @@ watchEffect(() => {
 
 const onClickCategory = async (selectedCategory: ICategory) => {
     category.value = selectedCategory;
-    await loadGeometries(geographic_region.value.id, [selectedCategory.id]);
+    await loadGeometries(geographic_region.value?.id, [selectedCategory.id]);
     updateGeoJson(layer);
     showCategory.value = false;
 };
@@ -118,7 +120,7 @@ const onSuccessSave = async () => {
     Object.keys(formForCreate).forEach((item) => {
         formForCreate[item] = "";
     });
-    await loadGeometries(geographic_region?.value?.id, [category.value.id]);
+    await loadGeometries(geographic_region?.value?.id, [category.value!.id]);
     updateGeoJson(layer);
     createModal.value = false;
     message.success("Успешно добавлено!");

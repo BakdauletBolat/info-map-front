@@ -4,7 +4,7 @@ import {
 } from "@/domain/stores.ts";
 
 import L, { Layer, Map } from "leaflet";
-import {ref, watch, render, h, reactive} from "vue";
+import {ref, watch, render, h} from "vue";
 import "@maptiler/leaflet-maptilersdk";
 import PopupComponent from "@/components/PopupComponent.vue";
 import instance from "@/api/instance.ts";
@@ -47,8 +47,8 @@ export const initMap = () => {
         map = L.map("map", {
             layers: [mtLayer],
         }).setView(
-            [geometry.value.region.latitude,geometry.value.region.longitude],
-            geometry.value.region.zoom
+            [geometry.value!.region.latitude,geometry.value!.region.longitude],
+            geometry.value!.region.zoom
         );
         //@ts-ignore
         map?.attributionControl.remove();
@@ -74,33 +74,11 @@ export const mapSetView = (map: Map, x: number, y: number, z: number) => {
     );
 };
 
-const transcryptor = {
-    title: "Тақырып",
-    description: "Сипаттама",
-};
-
 const renderPopup = (layer: any) => {
     const container = document.createElement('div');
     const node = h(PopupComponent, {layer});
     render(node, container)
     return container;
-};
-
-const generateColor = (renovated_at: string) => {
-    const date = new Date(renovated_at);
-    const greenTime = 157788000000;
-    const yellowTime = 63072000000;
-    const nowDate = Date.now();
-    //@ts-ignore
-    const diff = nowDate - date;
-    if (diff < yellowTime) {
-        return "green";
-    }
-    if (diff > yellowTime && diff < greenTime) {
-        return "yellow";
-    }
-
-    return "red";
 };
 
 
@@ -111,18 +89,20 @@ export const initData = async (region_id: number) => {
 };
 
 
-const negative = (coors) => {
-    return coors.map(coor=>[coor[1], coor[0]]);
+const negative = (coors: any) => {
+    return coors.map((coor: any)=>[coor[1], coor[0]]);
 }
 
-const negativeOne = (coors) => {
+const negativeOne = (coors: any) => {
     return [coors[1], coors[0]];
 }
 
 const initDrawerObjects = (layer: L.FeatureGroup) => {
-    geometry.value?.geometry.features.map(feature=>{
+     //@ts-ignore
+    geometry.value?.geometry!.features!.map((feature: any)=>{
         console.log(feature.geometry.type, feature.geometry)
         if (feature.geometry.type == 'LineString') {
+            //@ts-ignore
             const lineString = new L.polyline(negative(feature.geometry.coordinates), {}).addTo(map);
             lineString.layerType = "polyline";
             lineString.properties = feature.properties;
@@ -145,6 +125,7 @@ const initDrawerObjects = (layer: L.FeatureGroup) => {
                 iconAnchor: [16, 37],
                 popupAnchor: [0, -28],
             });
+             //@ts-ignore
             const pointLayer = new L.marker(negativeOne(feature.geometry.coordinates), {icon: icon}).addTo(map);
             pointLayer.layerType = "marker";
             pointLayer.properties = feature.properties;
@@ -154,7 +135,8 @@ const initDrawerObjects = (layer: L.FeatureGroup) => {
         }
 
         if (feature.geometry.type == 'Polygon') {
-            console.log('asdasdasd', feature.geometry.coordinates)
+
+             //@ts-ignore
             const polygonLayer = new L.polygon(negative(feature.geometry.coordinates[0]), {}).addTo(map);
             polygonLayer.layerType = "polygon";
             polygonLayer.properties = feature.properties;
@@ -245,7 +227,7 @@ export const save = async (id: string) => {
     return instance.put("/api/geometries/"+id+"/", {
         info: geometry.value?.info,
         geometry: geometriesBody
-    }).then(response => instance.get("/api/geometries/"+id+"/").then(res=>{
+    }).then((_) => instance.get("/api/geometries/"+id+"/").then(res=>{
         geometry.value = res.data;
     }));
 }

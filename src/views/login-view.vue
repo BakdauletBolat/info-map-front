@@ -23,10 +23,11 @@
 import {authUser, updateAuthenticationStatus} from '@/domain/stores';
 import { NCard,NForm,NFormItem, NInput, NButton, type FormInst, useMessage } from 'naive-ui';
 import {ref} from 'vue';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 const message = useMessage();
 const router = useRouter();
+const route = useRoute();
 
 const formRef = ref<FormInst | null>(null);
 const isLoading = ref<boolean>(false);
@@ -51,14 +52,22 @@ const rules = {
 async function handleValidateClick(e: MouseEvent) {
     e.preventDefault();
     isLoading.value = true;
-    console.log("Handle click")
+
+    const redirectPath = route.query.redirectRouteName?.toString() ?? 'editor-info-create-welcome';
+    const redirectParams = route.query.redirectRouteParams;
+
     formRef.value?.validate((errors) => {
       if (!errors) {
         authUser(formValue.value).then(res=>{
           updateAuthenticationStatus(res.data.token)
-          router.push({
-            name: 'editor-info-create-welcome'
-          });
+          let routeParam: any = {
+            name: redirectPath
+          }
+          if (redirectParams != undefined) {
+            routeParam.params = JSON.parse(redirectParams.toString());
+          }
+          
+          router.push(routeParam);
           message.success('Успешный вход!')
         }).catch(e=>{
           message.error('Пароль или логин не верный! '+e.toString())

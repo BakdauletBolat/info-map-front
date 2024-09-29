@@ -1,5 +1,3 @@
-import {formForCreate} from "@/domain/stores.ts";
-
 export const getPolylineType = (type: string) => {
     switch (type) {
         case "marker":

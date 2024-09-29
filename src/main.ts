@@ -19,13 +19,15 @@ const router = createRouter({
     routes,
 })
 
+
+
 router.beforeEach(async (to, _) => {
     if (
         !isAuthenticated.value &&
         to.name !== 'login-view' && to.meta.loginRequired
     ) {
-        // redirect the user to the login page
-        return { name: 'login-view' }
+        
+        return { name: 'login-view', query: { redirectRouteName: to.name?.toString(), redirectRouteParams: JSON.stringify(to.params ?? {}) } }
     }
 })
 

@@ -6,7 +6,7 @@ import {geometry} from "@/domain/stores.ts";
 const form = reactive<any>({});
 
 const update = () => {
-  let updateP = {}
+  let updateP: any = {}
   Object.keys(form).map(key=>{
     updateP[key] = form[key]
   })
@@ -14,9 +14,12 @@ const update = () => {
 }
 
 onMounted(()=>{
-  Object.keys(geometry.value?.info).map(key=>{
-    form[key] = geometry.value?.info[key]
+  if (geometry.value) {
+    Object.keys(geometry.value.info).map(key=>{
+    form[key] = geometry.value!.info[key]
   })
+  }
+ 
 })
 
 const fieldsForEdit = [{

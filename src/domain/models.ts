@@ -41,6 +41,7 @@ export interface IGeometryObject {
     geometry: GeoJSON;
     info: Record<string, any>;
     category: ICategory;
+    region: IGeographicRegion
     id: number;
 }
 

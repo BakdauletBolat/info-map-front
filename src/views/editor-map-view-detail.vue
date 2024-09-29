@@ -48,7 +48,7 @@ const onSave = () => {
           <n-button @click="router.push({
         name: 'editor-map-view',
         params: {
-          slug: geometry.region_slug
+          slug: geometry?.region.slug
         }
         })">Назад
           </n-button>

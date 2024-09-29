@@ -7,7 +7,7 @@ const props = defineProps(['layer', 'fieldsForEdit']);
 const form = reactive<any>({});
 
 const update = () => {
-  let updateP = {}
+  let updateP: any = {}
   Object.keys(form).map(key=>{
     updateP[key] = form[key]
   })
