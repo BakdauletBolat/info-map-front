@@ -242,6 +242,11 @@ onMounted(() => {
         </ModalComponent>
         <section class="w-full">
           <div class="w-full absolute bottom-5 z-[909999] right-0 flex justify-end gap-3 p-3">
+            <n-button>
+              <router-link :to="{
+              name: 'info-map-view',
+              params: {slug: route.params.slug.toString()} 
+            }">Назад</router-link></n-button>
             <n-button :disabled="isLoading" :loading="isLoading" type="primary" @click="()=>onSaveGeometryObject()">Сохранить</n-button>
             <n-button type="info" @click="()=>createModal = true">Открыть форму</n-button>
           </div>

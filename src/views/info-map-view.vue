@@ -11,7 +11,7 @@ import SwiperSliderGeographic from "@/components/SwiperSliderGeographic.vue";
 import InfoTabComponent from "@/components/InfoMapViewComponents/InfoTabComponent.vue";
 import {initData, onChangeCity} from "@/domain/map-store.ts";
 import InfoMapSidebar from "@/components/InfoMapViewComponents/InfoMapSidebar.vue";
-import {NDrawer, NDrawerContent} from "naive-ui";
+import {NDrawer, NDrawerContent, NButton} from "naive-ui";
 
 const route = useRoute();
 const router = useRouter();
@@ -51,6 +51,13 @@ onMounted(()=>{
 
     </div>
     <section class="w-full">
+      <div class="w-full absolute bottom-5 z-[909999] right-0 flex justify-end gap-3 p-3">
+            <n-button type="primary">
+              <router-link :to="{
+              name: 'editor-map-view',
+              params: {slug: route.params.slug.toString()} 
+            }">Открыть редактор</router-link></n-button>
+          </div>
       <div :style="{width:'100%',height: '100%'}" id="map"></div>
     </section>
   </main>

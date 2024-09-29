@@ -22,6 +22,11 @@ const router = createRouter({
 
 
 router.beforeEach(async (to, _) => {
+
+    if (to.name == "main-view") {
+        return {name: "info-map-view", params: {slug: "baidybek_d"}}
+    }
+
     if (
         !isAuthenticated.value &&
         to.name !== 'login-view' && to.meta.loginRequired
