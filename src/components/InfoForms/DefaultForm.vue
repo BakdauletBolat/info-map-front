@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { onMounted, reactive, watch } from 'vue'
-import {NInput, NInputNumber, NDatePicker, NButton} from 'naive-ui';
+import {NInput, NInputNumber, NDatePicker} from 'naive-ui';
 import {geometry} from "@/domain/stores.ts";
 
 const form = reactive<any>({});
