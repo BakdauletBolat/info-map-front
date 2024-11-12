@@ -81,6 +81,9 @@ export const mapSetView = (map: Map, x: number, y: number, z: number) => {
 const transcryptor = {
   title: "Тақырып",
   description: "Сипаттама",
+  km: "Шақырым",
+  renovated_at: "Соңғы жөндеу жасалған жыл",
+  type_road: "Жол түрі"
 };
 
 const renderPopup = (feature: any) => {
@@ -97,6 +100,11 @@ const renderPopup = (feature: any) => {
     } else {
       title = key;
     }
+
+    if (key == 'renovated_at') {
+      feature.properties[key] = new Date(feature.properties[key]).toLocaleDateString();
+    }
+
     html += `
             <div class="flex gap-2">
             <strong>${title}:</strong>

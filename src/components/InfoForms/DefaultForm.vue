@@ -1,17 +1,22 @@
 <script setup lang="ts">
-import {onMounted, reactive} from "vue";
+  import { onMounted, reactive, watch } from 'vue'
 import {NInput, NInputNumber, NDatePicker, NButton} from 'naive-ui';
 import {geometry} from "@/domain/stores.ts";
 
 const form = reactive<any>({});
 
-const update = () => {
+const update = (newForm: any) => {
   let updateP: any = {}
-  Object.keys(form).map(key=>{
-    updateP[key] = form[key]
+  Object.keys(newForm).map(key=>{
+    updateP[key] = newForm[key]
   })
   geometry.value!.info = updateP;
 }
+
+
+watch(form, (newForm, _) => {
+  update(newForm)
+})
 
 onMounted(()=>{
   if (geometry.value) {
@@ -38,7 +43,6 @@ const fieldsForEdit = [{
       <n-date-picker v-else-if="field.type == 'date'" v-model:value="form[field.key]" :placeholder="field.key"></n-date-picker>
       <n-input-number v-else-if="field.type == 'number'" v-model:value="form[field.key]" :placeholder="field.key"></n-input-number>
     </div>
-    <n-button @click="update">Обновить</n-button>
   </div>
 </template>
 

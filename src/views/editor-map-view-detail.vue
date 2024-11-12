@@ -6,18 +6,32 @@ import {initData, createModal, save} from "@/domain/map-store-detail.ts";
 //@ts-ignore
 import VueSelect from "vue-select";
 import {useRoute, useRouter} from "vue-router";
-import {NDrawer, NDrawerContent, NButton, NSpin, useMessage} from "naive-ui";
+import {NDrawer, NDrawerContent, NButton, NSpin, useMessage, NModal} from "naive-ui";
 import DefaultForm from "@/components/InfoForms/DefaultForm.vue";
 import {geometry, isLoadingGeometry} from "@/domain/stores.ts";
+import instance from '@/api/instance.ts'
 
 const route = useRoute();
 const router = useRouter();
 const message = useMessage()
 const isLoadingEdit = ref<boolean>(false);
-
+const openModalDelete = ref<boolean>(false);
 onMounted(() => {
   initData(parseInt(route.params.id.toString()));
 });
+
+const onRemove = () => {
+  instance.delete(`/api/geometries/${parseInt(route.params.id.toString())}/`).then((_)=>{
+    message.success("Успешно удалено");
+    setTimeout(()=>{
+      router.back();
+    }, 500)
+
+  }).catch((e)=>{
+    message.error(e);
+    console.log(e);
+  });
+}
 
 const onSave = () => {
   isLoadingEdit.value = true
@@ -33,13 +47,24 @@ const onSave = () => {
 <template>
   <n-spin :show="isLoadingGeometry">
     <main class="flex w-full min-h-screen">
+      <n-modal
+        v-model:show="openModalDelete"
+        :mask-closable="true"
+        preset="dialog"
+        title="Окно"
+        content="Вы уверены удалить обьект"
+        positive-text="Да"
+        negative-text="Нет, назад"
+        @positive-click="onRemove"
+        @negative-click="()=>openModalDelete=false"
+      />
       <n-drawer
           v-model:show="createModal"
           :default-width="502"
           :placement="'bottom'"
           resizable
       >
-        <n-drawer-content title="Форма изменении">
+        <n-drawer-content title="Общие данные (не обязательно)">
           <default-form></default-form>
         </n-drawer-content>
       </n-drawer>
@@ -54,6 +79,7 @@ const onSave = () => {
           </n-button>
           <n-button :loading="isLoadingEdit" :disabled="isLoadingEdit" type="primary" @click="onSave">Сохранить</n-button>
           <n-button type="info" @click="()=>createModal = true">Открыть форму</n-button>
+          <n-button type="error" @click="()=>openModalDelete=true">Удалить обьект?</n-button>
         </div>
         <div :style="{ width: '100%', height: '100%' }" id="map"></div>
       </section>
