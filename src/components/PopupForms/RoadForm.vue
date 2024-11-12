@@ -12,7 +12,8 @@ const fieldsForEdit = [{
   type: 'text',
 },
   {key: 'renovated_at', type: 'date'},
-  {key: 'km', type: 'number'}]
+  {key: 'km', type: 'number'},
+  {key: 'type_road', type: 'text'}]
 
 </script>
 
