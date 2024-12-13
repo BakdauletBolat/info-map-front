@@ -131,6 +131,12 @@ const initDrawerObjects = (layer: L.FeatureGroup) => {
             pointLayer.properties = feature.properties;
             const zooMarkerPopup = L.popup().setContent(renderPopup(pointLayer));
             pointLayer.bindPopup(zooMarkerPopup);
+            pointLayer.bindTooltip(feature.properties?.title ?? "Тест", {
+                permanent: true,
+                direction: "bottom",
+                offset: [0, -10],
+                interactive: true
+            });
             layer.addLayer(pointLayer);
         }
 

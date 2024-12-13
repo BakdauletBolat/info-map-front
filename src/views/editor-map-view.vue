@@ -50,6 +50,7 @@ const getAllRegions = (region: any, items: any) => {
             latitude: region.latitude,
             longitude: region.longitude,
             zoom: region.zoom,
+
         });
         region.children.forEach((item: any) => {
             getAllRegions(item, items);
@@ -109,7 +110,7 @@ watchEffect(() => {
 
 const onClickCategory = async (selectedCategory: ICategory) => {
     category.value = selectedCategory;
-    await loadGeometries(geographic_region.value?.id, [selectedCategory.id]);
+    await loadGeometries(selectedCity.value.code, [selectedCategory.id]);
     updateGeoJson(layer);
     showCategory.value = false;
 };
@@ -120,7 +121,7 @@ const onSuccessSave = async () => {
     Object.keys(formForCreate).forEach((item) => {
         formForCreate[item] = "";
     });
-    await loadGeometries(geographic_region?.value?.id, [category.value!.id]);
+    await loadGeometries(selectedCity.value.id, [category.value!.id]);
     updateGeoJson(layer);
     createModal.value = false;
     message.success("Успешно добавлено!");

@@ -4,8 +4,8 @@ import {
   loadGeometries,
   loadRegion,
   showCity,
-  toRenderGeometries,
-} from "@/domain/stores.ts";
+  toRenderGeometries
+} from '@/domain/stores.ts'
 import L, { Layer, Map } from "leaflet";
 import { GeoJSON } from "@/domain/models.ts";
 import {h, ref, render, watch} from "vue";
@@ -65,6 +65,8 @@ export const initMap = () => {
         'Бәйдібек ауданы <a href="https://widget.bolatb.kz/info/baidybek_d" target="_blank">B-Maps</a>',
       )
       .addTo(map);
+
+
   }
 };
 

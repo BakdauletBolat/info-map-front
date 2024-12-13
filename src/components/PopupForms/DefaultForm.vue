@@ -11,7 +11,6 @@ const update = (newForm: any) => {
   Object.keys(newForm).map(key=>{
     updateP[key] = newForm[key]
   })
-  console.log()
   if (newForm.title != undefined) {
     props.layer.getTooltip().setContent(newForm.title)
   }

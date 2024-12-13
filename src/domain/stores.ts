@@ -28,7 +28,7 @@ export const toRenderGeometries = computed(() => {
   return geometries.value.map((item) => {
     let l = item.geometry;
     //@ts-ignore
-    l.features.forEach((c) => {
+    l.features.forEach((c: any) => {
       c.properties.icon_url = item.category.icon;
       c.properties.category_id = item.category.id;
       c.properties.id = item.id;

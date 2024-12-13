@@ -21,11 +21,14 @@
 
   const defaultEditFields = [{
     key: 'title',
+    placeholder: 'Загаловок',
     type: 'text',
-  }, {
-    key: 'description',
-    type: 'text'
-  }]
+  },
+    {
+      key: 'description',
+      placeholder: 'Описание',
+      type: 'text',
+    }]
 
   defineProps(['layer'])
 </script>
