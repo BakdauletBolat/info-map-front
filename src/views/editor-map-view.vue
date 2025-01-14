@@ -110,7 +110,8 @@ watchEffect(() => {
 
 const onClickCategory = async (selectedCategory: ICategory) => {
     category.value = selectedCategory;
-    await loadGeometries(selectedCity.value.code, [selectedCategory.id]);
+    await loadGeometries(selectedCity.value.code, [selectedCategory.id], geographic_region.value!.latitude, 
+    geographic_region.value!.longitude);
     updateGeoJson(layer);
     showCategory.value = false;
 };
@@ -121,7 +122,8 @@ const onSuccessSave = async () => {
     Object.keys(formForCreate).forEach((item) => {
         formForCreate[item] = "";
     });
-    await loadGeometries(selectedCity.value.id, [category.value!.id]);
+    await loadGeometries(selectedCity.value.id, [category.value!.id], geographic_region.value!.latitude, 
+    geographic_region.value!.longitude);
     updateGeoJson(layer);
     createModal.value = false;
     message.success("Успешно добавлено!");

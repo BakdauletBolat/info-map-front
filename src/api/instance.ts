@@ -14,4 +14,12 @@ apiInstance.interceptors.request.use(function (config) {
     return Promise.reject(error);
 });
 
+apiInstance.interceptors.response.use((response)=>{return response}, (error)=>{
+    if (error.status === 401){
+        localStorage.removeItem('token')
+        window.location.href = '/'
+    }
+    return Promise.reject(error)
+})
+
 export default apiInstance;

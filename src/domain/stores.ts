@@ -59,8 +59,8 @@ export const authUser = async (body: object) => {
   return apiInstance.post("/auth/token/", body);
 };
 
-export const loadGeometries = async (region_id: number | undefined, categories: number[] = []) => {
-  let url = "/api/geometries?geographic_region_id=" + region_id;
+export const loadGeometries = async (region_id: number | undefined, categories: number[] = [], latitude: number, longitude: number) => {
+  let url = "/api/geometries?geographic_region_id=" + region_id + "&latitude=" + latitude + "&longitude=" + longitude;
   if (categories.length > 0) {
     url += '&category_ids='+categories.join(',')
   }
@@ -70,8 +70,10 @@ export const loadGeometries = async (region_id: number | undefined, categories: 
   }).finally(()=>{isLoadingGeometries.value=false});
 };
 
-export const loadGeometry = async (geometry_id: number) => {
-  let url = "/api/geometries/" + geometry_id;
+export const loadGeometry = async (geometry_id: number, 
+  latitude: number | null = null, 
+  longitude: number | null = null) => {
+  let url = "/api/geometries/" + geometry_id + "?latitude=" + latitude + "&longitude=" + longitude;
   isLoadingGeometry.value = true;
   await apiInstance.get<IGeometryObject>(url).then((res) => {
     geometry.value = res.data;
