@@ -66,7 +66,19 @@ export const initMap = () => {
       )
       .addTo(map);
 
-
+    // Listen for the 'moveend' event to detect when the map's view changes.
+    map.on('moveend', async function() {
+      // Get the new center coordinates.
+      const center = map!.getCenter();
+      const zoom = map!.getZoom();
+      await loadGeometries(geographic_region?.value?.id, [],
+        center.lat,
+        center.lng,
+        zoom
+      );
+      initMap();
+      initGeometryObjectsLayer();
+    });
   }
 };
 
@@ -164,15 +176,8 @@ const initGeometryObjectsLayer = () => {
           };
         },
         onEachFeature(feature, layer) {
-
-          const zooMarkerPopup = L.popup().setContent(renderPopup(feature));
-          layer.bindPopup(zooMarkerPopup);
-          layer.bindTooltip(feature.properties?.title ?? "Тест", {
-            permanent: true,
-            direction: "bottom",
-            offset: [0, -10],
-            interactive: true
-          });
+          const infoPopup = L.popup().setContent(renderPopup(feature));
+          layer.bindPopup(infoPopup);
         },
         filter: function (feature: GeoJSON, _: any) {
           return feature.properties.show_on_map;

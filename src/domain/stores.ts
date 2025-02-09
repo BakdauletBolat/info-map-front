@@ -59,8 +59,11 @@ export const authUser = async (body: object) => {
   return apiInstance.post("/auth/token/", body);
 };
 
-export const loadGeometries = async (region_id: number | undefined, categories: number[] = [], latitude: number, longitude: number) => {
-  let url = "/api/geometries?geographic_region_id=" + region_id + "&latitude=" + latitude + "&longitude=" + longitude;
+export const loadGeometries = async (region_id: number | undefined,
+                                     categories: number[] = [],
+                                     latitude: number, longitude: number,
+                                     zoom: number = 14) => {
+  let url = `/api/geometries?geographic_region_id=${region_id}&latitude=${latitude}&longitude=${longitude}&zoom=${zoom}`
   if (categories.length > 0) {
     url += '&category_ids='+categories.join(',')
   }
